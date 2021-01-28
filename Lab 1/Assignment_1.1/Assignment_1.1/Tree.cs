@@ -18,17 +18,17 @@ namespace Assignment_1._1
         }
 
         public Node Start { get; }
+          
+        // TODO Implement tree search algorithms to find optimal item list
 
-        public void Search()
+        void Breadth_First_Search()
         {
-            Item toTake = Start.PossibleDirections[0];
-
-            List<Item> newItemsTaken = Start.ItemsTaken;
-            newItemsTaken.Add(toTake);
-
-            Node node = new Node(newItemsTaken, allItems, limit);
+            
         }
 
-        // TODO Implement tree search algorithms to find optimal item list
+        void Depth_First_Search()
+        {
+
+        }
     }
 }

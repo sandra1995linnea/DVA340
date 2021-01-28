@@ -27,7 +27,7 @@ namespace Assignment_1._1
             }
 
             // read items:
-            int i;
+            int i, id, benefit, weight;
 
             for (i = 0; i < file.Length; i++)
             {
@@ -45,9 +45,12 @@ namespace Assignment_1._1
                     break;
                 }
                 ;
-                //file[i]
-           //     items.Add(new Item(...));
-            }                
+                string[] values = file[j].Split(' ');
+                id = (int)Double.Parse(values[0]);
+                benefit = (int)Double.Parse(values[1]);
+                weight = (int)Double.Parse(values[2]);
+                items.Add(new Item(id, benefit, weight));
+            }
         }
 
         static void Main(string[] args)
@@ -62,9 +65,8 @@ namespace Assignment_1._1
 
             Tree myTree = new Tree(items, limit);
 
+            List<Node> childNodes = myTree.Start.ChildNodes;
 
-
-            Console.WriteLine("Hello World!");
         }
     }
 }
