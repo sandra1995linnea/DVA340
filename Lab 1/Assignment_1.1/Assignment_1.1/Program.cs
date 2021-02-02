@@ -65,8 +65,15 @@ namespace Assignment_1._1
 
             Tree myTree = new Tree(items, limit);
 
-            List<Node> childNodes = myTree.Start.ChildNodes;
+            Node best = myTree.Breadth_First_Search();
 
+            Console.WriteLine("Best path");
+            foreach(var item in best.ItemsTaken)
+            {
+                Console.WriteLine("Item ID " + item.Id.ToString());
+            }
+            Console.WriteLine("Total benifit: " + best.TotalBenifit);
+            Console.WriteLine("Total weight: " + best.TotalWeight);
         }
     }
 }

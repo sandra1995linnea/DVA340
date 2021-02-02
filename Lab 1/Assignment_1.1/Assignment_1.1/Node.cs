@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Assignment_1._1
 {
@@ -11,6 +12,8 @@ namespace Assignment_1._1
 
         public Node(List<Item> itemsTaken, List<Item> allItems, int limit)
         {
+            itemsTaken.Sort();
+
             ItemsTaken = itemsTaken;
             TotalBenifit = 0;
             TotalWeight = 0;
@@ -23,15 +26,13 @@ namespace Assignment_1._1
                 TotalBenifit += takenItem.Benefit;
                 TotalWeight += takenItem.Weight;
             }
-            
         }
 
         public List<Item> ItemsTaken { get; }
         public int TotalBenifit { get; }
         public int TotalWeight { get; }
 
-
-        public List<Item> PossibleItemss
+        public List<Item> PossibleItems
         {
             get
             {
@@ -61,7 +62,7 @@ namespace Assignment_1._1
                     childNodes = new List<Node>();
 
                     //looping through possible items to take
-                    foreach (var wayToGo in PossibleItemss)
+                    foreach (var wayToGo in PossibleItems)
                     {
                         // this list will contain taken items
                         List<Item> itemsTakenForThisNode = new List<Item>(ItemsTaken);
@@ -74,5 +75,40 @@ namespace Assignment_1._1
                 return childNodes;
             }
         }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is Node node)
+                return EqualityComparer<List<Item>>.Default.Equals(ItemsTaken, node.ItemsTaken);
+            else
+                return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(ItemsTaken);
+        }
+
+        public static bool operator ==(Node left, Node right) => left.Equals(right);
+       /* {
+            if (left == null && right == null)
+                return true;
+            else if ((left != null && right == null) || (left == null && right != null))
+                return false;
+            else
+            {
+                if (left.ItemsTaken.Count != right.ItemsTaken.Count)
+                    return false;
+
+                for(int i=0; i< left.ItemsTaken.Count; i++)
+                {
+                    if (left.ItemsTaken[i] != right.ItemsTaken[i])
+                        return false;
+                }
+                return true;
+            }
+        }*/
+
+        public static bool operator !=(Node left, Node right) => !(left == right);
     }
 }
