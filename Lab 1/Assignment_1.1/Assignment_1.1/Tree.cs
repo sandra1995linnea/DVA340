@@ -23,6 +23,7 @@ namespace Assignment_1._1
             // adding the root node
             queue.Add(Start);
             best = Start;
+            Print(Start);
 
             while (queue.Count > 0)
             {
@@ -38,10 +39,7 @@ namespace Assignment_1._1
                     if (!queue.Contains(theNode))
                     {
                         queue.Add(theNode);
-                    }
-                    else
-                    {
-                        Console.WriteLine("Duplication!");
+                        Print(theNode);
                     }
                 }
                 // remove that node:
@@ -50,9 +48,19 @@ namespace Assignment_1._1
             return best;
         }
 
+        private void Print(Node node)
+        {
+            string str = "";
+            foreach(var item in node.ItemsTaken)
+            {
+                str = str + " " + item.Id.ToString();
+            }
+            Console.WriteLine("Node: " + str);
+        }
+
         void Depth_First_Search()
         {
-            // TODO!
+
         }
     }
 }

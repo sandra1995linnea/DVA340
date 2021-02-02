@@ -2,7 +2,7 @@
 
 namespace Assignment_1._1
 {
-    class Item : IComparable
+    public class Item : IComparable
     {
         public Item(int Id, int Benefit, int Weight)
         {

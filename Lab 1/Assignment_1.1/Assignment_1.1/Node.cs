@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Assignment_1._1
 {
-    class Node
+    public class Node : IEquatable<Node>
     {
         private readonly List<Item> allItems;
         private readonly int limit;
@@ -78,10 +79,31 @@ namespace Assignment_1._1
 
         public override bool Equals(object obj)
         {
-            if (obj is Node node)
-                return EqualityComparer<List<Item>>.Default.Equals(ItemsTaken, node.ItemsTaken);
-            else
+            if (obj == null)
                 return false;
+
+            if (obj is Node node)
+            {   
+                if (ItemsTaken.Count != node.ItemsTaken.Count)
+                    return false;
+
+                for (int i = 0; i < ItemsTaken.Count; i++)
+                {
+                    if (ItemsTaken[i] != node.ItemsTaken[i])
+                        return false;
+                }
+                return true;
+            }
+            else
+               return false;
+        }
+
+        public bool Equals([AllowNull] Node other)
+        {
+            if (other is null)
+                return false;
+
+            return Equals((object)other);
         }
 
         public override int GetHashCode()
