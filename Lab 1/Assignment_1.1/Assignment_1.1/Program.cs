@@ -57,6 +57,8 @@ namespace Assignment_1._1
             string name = "F:/Mälardalens Högskola/DVA340/Lab 1/knapsack.txt";
             string[] file = System.IO.File.ReadAllLines(name);
 
+            Console.WriteLine("Searching...");
+
             List<Item> items;
             int limit;
 
@@ -65,6 +67,7 @@ namespace Assignment_1._1
             Tree myTree = new Tree(items, limit);
 
             Node best = myTree.Breadth_First_Search();
+            //Node best = myTree.Depth_First_Search();
 
             Console.WriteLine("Best path");
             foreach(var item in best.ItemsTaken)

@@ -34,12 +34,12 @@ namespace Assignment_1._1
                 }
 
                 // Add only those nodes that are NOT already in the queue:
-                foreach(Node theNode in queue[0].ChildNodes)
+                foreach(Node newNode in queue[0].ChildNodes)
                 {
-                    if (!queue.Contains(theNode))
+                    if (!queue.Contains(newNode))
                     {
-                        queue.Add(theNode);
-                        Print(theNode);
+                        queue.Add(newNode);
+                        Print(newNode);
                     }
                 }
                 // remove that node:
@@ -48,19 +48,51 @@ namespace Assignment_1._1
             return best;
         }
 
-        private void Print(Node node)
+        public Node Depth_First_Search()
         {
-            string str = "";
-            foreach(var item in node.ItemsTaken)
+            //adding the root node 
+            Node best;
+            Stack<Node> mystack = new Stack<Node>();
+            List<Node> visitedNodes = new List<Node>();
+
+            mystack.Push(Start);
+            visitedNodes.Add(Start);
+            best = Start;
+            Print(Start);
+
+            while (mystack.Count > 0)
             {
-                str = str + " " + item.Id.ToString();
+                Node next = mystack.Pop();
+
+                //keep track of the best node so far
+                if(next.TotalBenifit > best.TotalBenifit)
+                {
+                    best = next;
+                }
+
+                //Add only those nodes that are not already in the Stack
+                foreach(Node newNode in next.ChildNodes)
+                {
+                    if (!visitedNodes.Contains(newNode))
+                    {
+                        mystack.Push(newNode);
+                        visitedNodes.Add(newNode);
+                    }
+                }
+
+                Print(next);
             }
-            Console.WriteLine("Node: " + str);
+            return best;
         }
 
-        void Depth_First_Search()
+        private void Print(Node node)
         {
-
+            //string str = "";
+            //foreach(var item in node.ItemsTaken)
+            //{
+            //    str = str + " " + item.Id.ToString();
+            //}
+            //Console.WriteLine("Node: " + str);
         }
     }
 }

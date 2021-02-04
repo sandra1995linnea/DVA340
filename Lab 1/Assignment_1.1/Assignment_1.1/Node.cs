@@ -13,8 +13,6 @@ namespace Assignment_1._1
 
         public Node(List<Item> itemsTaken, List<Item> allItems, int limit)
         {
-            itemsTaken.Sort();
-
             ItemsTaken = itemsTaken;
             TotalBenifit = 0;
             TotalWeight = 0;
@@ -87,9 +85,15 @@ namespace Assignment_1._1
                 if (ItemsTaken.Count != node.ItemsTaken.Count)
                     return false;
 
+                List<Item> myItems = new List<Item>(ItemsTaken);
+                List<Item> thoseItems = new List<Item>(node.ItemsTaken);
+
+                myItems.Sort();
+                thoseItems.Sort();
+
                 for (int i = 0; i < ItemsTaken.Count; i++)
                 {
-                    if (ItemsTaken[i] != node.ItemsTaken[i])
+                    if (myItems[i] != thoseItems[i])
                         return false;
                 }
                 return true;
