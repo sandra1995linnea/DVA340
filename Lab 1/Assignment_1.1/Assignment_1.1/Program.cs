@@ -54,6 +54,8 @@ namespace Assignment_1._1
 
         static void Main(string[] args)
         {
+            var time = new System.Diagnostics.Stopwatch();
+            
             string name = "F:/Mälardalens Högskola/DVA340/Lab 1/knapsack.txt";
             string[] file = System.IO.File.ReadAllLines(name);
 
@@ -65,9 +67,11 @@ namespace Assignment_1._1
             ReadItems(file, out items, out limit);
 
             Tree myTree = new Tree(items, limit);
-
+            time.Start();
             Node best = myTree.Breadth_First_Search();
             //Node best = myTree.Depth_First_Search();
+            time.Stop();
+            Console.WriteLine($"Time for execution: {time.ElapsedMilliseconds} ms");
 
             Console.WriteLine("Best path");
             foreach(var item in best.ItemsTaken)

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Assignment_1._1
 {
@@ -8,13 +6,10 @@ namespace Assignment_1._1
     {
         public Tree(List<Item> allItems, int limit)
         {
-            Start = new Node(new List<Item>(), allItems, limit);
+            Start = new Node(new List<Item>(), allItems.ToArray(), limit);
         }
 
         public Node Start { get; }
-          
-        // TODO Implement tree search algorithms to find optimal item list
-
         public Node Breadth_First_Search()
         {
             Node best;
@@ -33,32 +28,27 @@ namespace Assignment_1._1
                     best = queue[0];
                 }
 
-                // Add only those nodes that are NOT already in the queue:
                 foreach(Node newNode in queue[0].ChildNodes)
                 {
-                    if (!queue.Contains(newNode))
-                    {
-                        queue.Add(newNode);
-                        Print(newNode);
-                    }
+                    queue.Add(newNode);
+                    Print(newNode);
                 }
                 // remove that node:
                 queue.RemoveAt(0);
             }
+
             return best;
         }
 
         public Node Depth_First_Search()
         {
-            //adding the root node 
             Node best;
             Stack<Node> mystack = new Stack<Node>();
-            List<Node> visitedNodes = new List<Node>();
 
+            //adding the root node 
             mystack.Push(Start);
-            visitedNodes.Add(Start);
+
             best = Start;
-            Print(Start);
 
             while (mystack.Count > 0)
             {
@@ -70,15 +60,7 @@ namespace Assignment_1._1
                     best = next;
                 }
 
-                //Add only those nodes that are not already in the Stack
-                foreach(Node newNode in next.ChildNodes)
-                {
-                    if (!visitedNodes.Contains(newNode))
-                    {
-                        mystack.Push(newNode);
-                        visitedNodes.Add(newNode);
-                    }
-                }
+                next.ChildNodes.ForEach((newNode) => mystack.Push(newNode));
 
                 Print(next);
             }
@@ -88,11 +70,11 @@ namespace Assignment_1._1
         private void Print(Node node)
         {
             //string str = "";
-            //foreach(var item in node.ItemsTaken)
+            //foreach (var item in node.ItemsTaken)
             //{
             //    str = str + " " + item.Id.ToString();
             //}
-            //Console.WriteLine("Node: " + str);
+            //System.Console.WriteLine("Node: " + str);
         }
     }
 }
