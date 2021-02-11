@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Collections.Generic;
 
 namespace Assignment_1._1
 {
-    public class Node : IEquatable<Node>
+    public class Node
     {
         private readonly Item[] allItems;
         private readonly int limit;
@@ -60,67 +58,5 @@ namespace Assignment_1._1
                 return childNodes;
             }
         }
-
-        public override bool Equals(object obj)
-        {
-            if (obj == null)
-                return false;
-
-            if (obj is Node node)
-            {   
-                if (ItemsTaken.Count != node.ItemsTaken.Count)
-                    return false;
-
-                List<Item> myItems = new List<Item>(ItemsTaken);
-                List<Item> thoseItems = new List<Item>(node.ItemsTaken);
-
-                myItems.Sort();
-                thoseItems.Sort();
-
-                for (int i = 0; i < ItemsTaken.Count; i++)
-                {
-                    if (myItems[i] != thoseItems[i])
-                        return false;
-                }
-                return true;
-            }
-            else
-               return false;
-        }
-
-        public bool Equals([AllowNull] Node other)
-        {
-            if (other is null)
-                return false;
-
-            return Equals((object)other);
-        }
-
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(ItemsTaken);
-        }
-
-        public static bool operator ==(Node left, Node right) => left.Equals(right);
-       /* {
-            if (left == null && right == null)
-                return true;
-            else if ((left != null && right == null) || (left == null && right != null))
-                return false;
-            else
-            {
-                if (left.ItemsTaken.Count != right.ItemsTaken.Count)
-                    return false;
-
-                for(int i=0; i< left.ItemsTaken.Count; i++)
-                {
-                    if (left.ItemsTaken[i] != right.ItemsTaken[i])
-                        return false;
-                }
-                return true;
-            }
-        }*/
-
-        public static bool operator !=(Node left, Node right) => !(left == right);
     }
 }
