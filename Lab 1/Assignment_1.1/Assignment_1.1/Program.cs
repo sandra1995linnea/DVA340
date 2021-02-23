@@ -68,8 +68,8 @@ namespace Assignment_1._1
 
             Tree myTree = new Tree(items, limit);
             time.Start();
-            //Node best = myTree.Breadth_First_Search();
-            Node best = myTree.Depth_First_Search();
+            Node best = myTree.Breadth_First_Search();
+            //Node best = myTree.Depth_First_Search();
             time.Stop();
             Console.WriteLine($"Time for execution: {time.ElapsedMilliseconds} ms");
 

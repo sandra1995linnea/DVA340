@@ -69,12 +69,12 @@ namespace Assignment_1._1
 
         private void Print(Node node)
         {
-            //string str = "";
-            //foreach (var item in node.ItemsTaken)
-            //{
-            //    str = str + " " + item.Id.ToString();
-            //}
-            //System.Console.WriteLine("Node: " + str);
+            /*string str = "";
+            foreach (var item in node.ItemsTaken)
+            {
+                str = str + " " + item.Id.ToString();
+            }
+            System.Console.WriteLine("Node: " + str);*/
         }
     }
 }
