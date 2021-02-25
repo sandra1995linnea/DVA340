@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 
 namespace Spain_map
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             string name = "F:/Mälardalens Högskola/DVA340/Lab 1/Spain_map.txt";
             string[] lines = File.ReadAllLines(name);
             string[] subStrings;
-            string a, b, distance;
             int i = 0;
             List<Edge> edges = new List<Edge>();
             List<City> cities = new List<City>();
@@ -44,7 +42,13 @@ namespace Spain_map
                 cities.Add(new City(subStrings[0], int.Parse(subStrings[1])));
             }
 
-            int heJ = 0;
+            Graph mygraph = new Graph(cities);
+
+            foreach (var edge in edges)
+            {
+                mygraph.ConnectCities(edge.City1, edge.City2, edge.Distance);
+            }
+
         }
     }
 }

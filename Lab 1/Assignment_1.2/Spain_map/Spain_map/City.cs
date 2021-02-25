@@ -1,14 +1,19 @@
-﻿namespace Spain_map
+﻿using System.Collections.Generic;
+
+namespace Spain_map
 {
     public class City
     {
         public City(string name, int distance)
         {
             Name = name;
-            Distance = distance;
+            DistanceToGoal = distance;
         }
 
         public string Name { get; }
-        public int Distance { get; }
+        public int DistanceToGoal { get; }
+
+        public List<Road> Roads { get; private set; } = new List<Road>();
+       
     }
 }
