@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace Spain_map
@@ -49,6 +50,12 @@ namespace Spain_map
                 mygraph.ConnectCities(edge.City1, edge.City2, edge.Distance);
             }
 
+            Console.WriteLine("Searching...");
+
+            mygraph.GreedyBestFirst("Malaga");
+
+            Console.WriteLine("");
+            Console.WriteLine("End");
         }
     }
 }
