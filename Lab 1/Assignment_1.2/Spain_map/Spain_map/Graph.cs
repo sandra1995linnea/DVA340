@@ -49,9 +49,9 @@ namespace Spain_map
             
             while(relevantCities.Count > 0)
             {
-                // TODO: From the city we are in, expand which is the next city to move on to
+                //From the city we are in, expand which is the next city to move on to
 
-                // pops out the first city in the queue
+                // pops out the first city in the list
                 cityWeAreIn = relevantCities[0];
 
                 // expand node:
@@ -95,8 +95,44 @@ namespace Spain_map
         }
 
         public void Astar(string nameOfStartCity)
-        {
+        {            
+            var cityWeAreIn = Cities.Find((x) => x.Name == nameOfStartCity);
+            List<Tuple<int, City>> possibleCities = new List<Tuple<int, City>>();
+            const string cityToFind = "Valladolid";
 
+            possibleCities = cityWeAreIn.AdjacentCityDistance;
+
+            while (possibleCities.Count > 0)
+            {
+                Tuple<int, City> bestSoFar = possibleCities[0];
+
+                Console.Write("At " + cityWeAreIn.Name + ", can go to: ");
+
+                foreach (var city in possibleCities)
+                {
+                    Console.Write(city.Item2.Name + "\t");
+
+                    if (city.Item1 + city.Item2.DistanceToGoal < bestSoFar.Item1 + bestSoFar.Item2.DistanceToGoal)
+                    {
+                        bestSoFar = city;
+                    }                    
+                }
+
+                // moving to the best city:
+                cityWeAreIn = bestSoFar.Item2;
+
+                Console.WriteLine("Moving to " + cityWeAreIn.Name);
+
+                if (cityWeAreIn.Name == cityToFind)
+                {
+                    Console.WriteLine("We're in Valladolid now, time for sangria!");
+                    return;
+                }
+
+                possibleCities = cityWeAreIn.AdjacentCityDistance;
+                
+            }
+            Console.WriteLine("Failed to find " + cityToFind);
         }
     }
 }
