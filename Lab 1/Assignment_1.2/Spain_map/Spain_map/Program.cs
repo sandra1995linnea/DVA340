@@ -52,8 +52,8 @@ namespace Spain_map
 
             Console.WriteLine("Searching...");
 
-            //mygraph.GreedyBestFirst("Malaga");
-            mygraph.Astar("Malaga");
+            mygraph.GreedyBestFirst("Malaga");
+            //mygraph.Astar("Malaga");
 
             Console.WriteLine("");
             Console.WriteLine("End");

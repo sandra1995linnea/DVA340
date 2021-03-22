@@ -73,7 +73,7 @@ namespace Spain_map
                         // add the city at the correct place in relevantCities
                         int index = relevantCities.Count;
 
-                        foreach(var relevant in relevantCities) // TODO: rename 'relevant'
+                        foreach(var relevant in relevantCities) 
                         {
                             if(relevant.DistanceToGoal > city.DistanceToGoal)
                             {
@@ -125,7 +125,7 @@ namespace Spain_map
 
                 if (cityWeAreIn.Name == cityToFind)
                 {
-                    Console.WriteLine("We're in Valladolid now, time for sangria!");
+                    Console.WriteLine("We're in Valladolid now!");
                     return;
                 }
 
