@@ -15,12 +15,16 @@ namespace Sudoku
         public void Run()
         {
             List<Board> boards = GenerateBoards();
-            
-        }
 
-        public void SolveSudoku()
-        {
-
+            int count = 0;
+            foreach(var board in boards)
+            {
+                count++;
+                Console.WriteLine("");
+                Console.WriteLine("SUDOKU " + count.ToString() + ":");
+                board.SolveSudoku();
+                board.Print();
+            }
         }
 
         public List<Board> GenerateBoards()

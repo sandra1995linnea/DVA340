@@ -13,7 +13,7 @@ namespace Sudoku
 
         public void Print()
         {
-            Console.Write("{0,8}", Number);
+            Console.Write("{0,3}", Number);
         }
     }
 }
