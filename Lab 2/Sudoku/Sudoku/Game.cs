@@ -14,10 +14,14 @@ namespace Sudoku
 
         public void Run()
         {
+            int count = 0;
+            var time = new System.Diagnostics.Stopwatch();
+            
             List<Board> boards = GenerateBoards();
 
-            int count = 0;
-            foreach(var board in boards)
+            time.Start();
+
+            foreach (var board in boards)
             {
                 count++;
                 Console.WriteLine("");
@@ -25,6 +29,9 @@ namespace Sudoku
                 board.SolveSudoku();
                 board.Print();
             }
+
+            time.Stop();
+            Console.WriteLine($"Time for execution: {time.ElapsedMilliseconds} ms");
         }
 
         public List<Board> GenerateBoards()

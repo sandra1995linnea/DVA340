@@ -5,9 +5,9 @@ namespace Sudoku
 {
     public class Board
     {
-        readonly Tile[,] board;
+        private readonly Tile[,] board;
 
-        private List<Tuple<int, int>> emptySpots = new List<Tuple<int, int>>();
+        private readonly List<Tuple<int, int>> emptySpots = new List<Tuple<int, int>>();
 
         public Board(List<Tile> tiles)
         {
@@ -159,14 +159,28 @@ namespace Sudoku
             var emptySpot = emptySpots[0];
             emptySpots.RemoveAt(0);
 
-            List<Tile> possible = PossibleTiles(emptySpot);
-            if(possible.Count == 0)
+            List<Tile> possibleTiles = PossibleTiles(emptySpot);
+            if(possibleTiles.Count == 0)
             {
+                // re-add the empty spot as actually empty before back-tracking:
+                emptySpots.Insert(0, emptySpot);
+                board[emptySpot.Item1, emptySpot.Item2] = new Tile(0);
+
                 return false;
             }
 
+            foreach(var possible in possibleTiles)
+            {
+                board[emptySpot.Item1, emptySpot.Item2] = possible;
 
-
+                if(SolveSudoku())
+                {
+                    return true;
+                }
+            }
+            // re-add the empty spot as actually empty before back-tracking:
+            emptySpots.Insert(0, emptySpot);
+            board[emptySpot.Item1, emptySpot.Item2] = new Tile(0);
 
             return false;
         }
