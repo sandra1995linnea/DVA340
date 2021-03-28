@@ -12,7 +12,7 @@ namespace The_traveling_sales_man
 
             var population = new Population(allLocations);
 
-            bool success = population.RunEvolution(1000, 9000);
+            bool success = population.RunEvolution(10000, 9000);
 
             
 

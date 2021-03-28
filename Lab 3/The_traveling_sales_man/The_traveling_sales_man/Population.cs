@@ -7,7 +7,7 @@ namespace The_traveling_sales_man
     {
         private const int SIZE = 100;
         private const int NUM_SURVIVERS = 50;
-        private const int NUM_MUTATIONS = 2;
+        private const int NUM_MUTATIONS = 10;
 
         public List<Individual> Individuals { get; private set; }
 
@@ -42,6 +42,26 @@ namespace The_traveling_sales_man
             }            
         }
 
+        private void RunMatingSeason()
+        {
+            Random random = new Random();
+            List<Individual> children = new List<Individual>();
+
+            while(Individuals.Count + children.Count < SIZE)
+            {
+                int parent1 = random.Next(0, Individuals.Count);
+                int parent2 = random.Next(0, Individuals.Count); // TODO ensure that parent1 != parent2
+
+                Individual child1, child2;
+                Individual.CrossOver(Individuals[parent1], Individuals[parent2], out child1, out child2);
+
+                children.Add(child1);
+                children.Add(child2);
+            }
+
+            Individuals.AddRange(children);
+        }
+
         /// <summary>
         /// The actual Genetic Algorithm
         /// </summary>
@@ -59,6 +79,7 @@ namespace The_traveling_sales_man
                     return true;
                 }
 
+                RunMatingSeason();
                 MutatePopulation();
             }
             return false;
