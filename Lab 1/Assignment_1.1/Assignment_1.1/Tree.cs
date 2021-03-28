@@ -62,6 +62,8 @@ namespace Assignment_1._1
 
                 next.ChildNodes.ForEach((newNode) => mystack.Push(newNode));
 
+
+
                 Print(next);
             }
             return best;
