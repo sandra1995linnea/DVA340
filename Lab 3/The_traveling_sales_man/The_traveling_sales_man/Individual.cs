@@ -9,7 +9,7 @@ namespace The_traveling_sales_man
 
         public Individual(List<Location> locations)
         {
-            Locations = locations;
+            Locations = new List<Location>(locations);
 
             Random rng = new Random();
             int n = locations.Count;
@@ -49,7 +49,7 @@ namespace The_traveling_sales_man
             {
                 if (totalDistance == null)
                 {
-                    double totalDistance = 0;
+                    totalDistance = 0;
                     Location previous = null;
 
                     foreach (var location in Locations)
