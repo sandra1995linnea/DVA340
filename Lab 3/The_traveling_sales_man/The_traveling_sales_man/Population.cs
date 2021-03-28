@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace The_traveling_sales_man
 {
@@ -6,6 +7,7 @@ namespace The_traveling_sales_man
     {
         private const int SIZE = 100;
         private const int NUM_SURVIVERS = 50;
+        private const int NUM_MUTATIONS = 2;
 
         public List<Individual> Individuals { get; private set; }
 
@@ -28,6 +30,18 @@ namespace The_traveling_sales_man
             Individuals.RemoveRange(SIZE - NUM_SURVIVERS, SIZE - NUM_SURVIVERS);
         }
 
+        private void MutatePopulation()
+        {
+            int index;
+            Random random = new Random();
+
+            for(int i = 0; i < NUM_MUTATIONS; i++)
+            {
+                index = random.Next(0, Individuals.Count);
+                Individuals[index].Mutate();
+            }            
+        }
+
         /// <summary>
         /// The actual Genetic Algorithm
         /// </summary>
@@ -45,7 +59,7 @@ namespace The_traveling_sales_man
                     return true;
                 }
 
-
+                MutatePopulation();
             }
             return false;
         }
