@@ -21,6 +21,17 @@ namespace The_traveling_sales_man
             }
         }
 
+        internal void Print()
+        {
+            //print all id:s in the order we shall choose them
+            Console.WriteLine("ID:s for visited locations:");
+            Console.WriteLine("");
+            foreach (var location in Locations)
+            {
+                Console.WriteLine(location.Id);
+            }
+        }
+
         private void Swap(int index1, int index2)
         {
             Location value = Locations[index1];
@@ -67,13 +78,45 @@ namespace The_traveling_sales_man
             }
         }
 
-
-        public static void CrossOver(Individual parent1, Individual parent2, out Individual offspring1, out Individual offspring2)
+        public static Individual CrossOver(Individual parent1, Individual parent2)
         {
-#warning "FIX CROSSOVER!"
-            // TODO!
-            offspring1 = parent1;
-            offspring2 = parent2;
+            List<Location> childsLocations = new List<Location>();
+            List<Location> fromParent1 = new List<Location>();
+            List<Location> fromParent2 = new List<Location>();
+            Random random = new Random();
+
+            int index1 = random.Next(0, parent1.Locations.Count - 1);
+            int index2 = random.Next(index1 + 1, parent1.Locations.Count);
+            
+            // adds the index to a temp list
+            for(int i = index1; i != index2; i++)
+            {
+                fromParent1.Add(parent1.Locations[i]);
+            }
+            // taking all IDs in parent 2 that has not been chosen from parent 1
+            foreach (var parent2location in parent2.Locations)
+            {
+                if(!fromParent1.Contains(parent2location))
+                {
+                    fromParent2.Add(parent2location);
+                }
+            }
+
+            for(int i = 0; i < index1; i++)
+            {
+                childsLocations.Add(fromParent2[0]);
+                fromParent2.RemoveAt(0);
+            }
+
+            childsLocations.AddRange(fromParent1);
+            childsLocations.AddRange(fromParent2);
+
+            if(childsLocations.Count != parent1.Locations.Count || childsLocations.Count != parent2.Locations.Count)
+            {
+                throw new Exception("Something wrong!");
+            }
+
+            return new Individual(childsLocations);
         }
 
         /// <summary>

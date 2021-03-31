@@ -7,7 +7,7 @@ namespace The_traveling_sales_man
     {
         private const int SIZE = 100;
         private const int NUM_SURVIVERS = 50;
-        private const int NUM_MUTATIONS = 10;
+        private const int NUM_MUTATIONS = 5;
 
         public List<Individual> Individuals { get; private set; }
 
@@ -52,11 +52,9 @@ namespace The_traveling_sales_man
                 int parent1 = random.Next(0, Individuals.Count);
                 int parent2 = random.Next(0, Individuals.Count); // TODO ensure that parent1 != parent2
 
-                Individual child1, child2;
-                Individual.CrossOver(Individuals[parent1], Individuals[parent2], out child1, out child2);
+                Individual child1 = Individual.CrossOver(Individuals[parent1], Individuals[parent2]);
 
                 children.Add(child1);
-                children.Add(child2);
             }
 
             Individuals.AddRange(children);
@@ -82,7 +80,15 @@ namespace The_traveling_sales_man
                 RunMatingSeason();
                 MutatePopulation();
             }
+            Individuals.Sort(Individual.Compare);
             return false;
+        }
+
+        public Individual BestSolution => Individuals[0];
+
+        public void PrintBestSolution()
+        {
+
         }
     }
 }
