@@ -25,7 +25,6 @@ namespace The_traveling_sales_man
         {
             //print all id:s in the order we shall choose them
             Console.WriteLine("ID:s for visited locations:");
-            Console.WriteLine("");
             foreach (var location in Locations)
             {
                 Console.WriteLine(location.Id);
@@ -45,10 +44,9 @@ namespace The_traveling_sales_man
         {
             Random random = new Random();
 
-            int k = random.Next(Locations.Count - 1) + 1;
-            int j = random.Next(Locations.Count - 1) + 1;
+            int index = random.Next(Locations.Count - 2) + 1;
 
-            Swap(k, j);
+            Swap(index, index + 1);
 
             totalDistance = null;
         }

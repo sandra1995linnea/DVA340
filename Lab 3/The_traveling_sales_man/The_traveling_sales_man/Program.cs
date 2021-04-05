@@ -15,6 +15,8 @@ namespace The_traveling_sales_man
             bool success = population.RunEvolution(10000, 9000);
 
             //print best solution and the total best distance
+            Console.WriteLine("");
+            Console.WriteLine("Best solution:");
             population.BestSolution.Print();
 
         }

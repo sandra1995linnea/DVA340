@@ -6,8 +6,9 @@ namespace The_traveling_sales_man
     class Population
     {
         private const int SIZE = 100;
-        private const int NUM_SURVIVERS = 50;
-        private const int NUM_MUTATIONS = 5;
+        private const int NUM_PARENTS = 30;
+        private const int NUM_SURVIVERS = 2; // for elitism
+        private const int NUM_MUTATIONS = 10;
 
         public List<Individual> Individuals { get; private set; }
 
@@ -27,18 +28,18 @@ namespace The_traveling_sales_man
         private void Selection()
         {
             Individuals.Sort(Individual.Compare);
-            Individuals.RemoveRange(SIZE - NUM_SURVIVERS, SIZE - NUM_SURVIVERS);
+            Individuals.RemoveRange(NUM_PARENTS, SIZE - NUM_PARENTS);
         }
 
-        private void MutatePopulation()
+        private void MutatePopulation(List<Individual> toMutate)
         {
             int index;
             Random random = new Random();
 
             for(int i = 0; i < NUM_MUTATIONS; i++)
             {
-                index = random.Next(0, Individuals.Count);
-                Individuals[index].Mutate();
+                index = random.Next(0, toMutate.Count);
+                toMutate[index].Mutate();
             }            
         }
 
@@ -47,8 +48,9 @@ namespace The_traveling_sales_man
             Random random = new Random();
             List<Individual> children = new List<Individual>();
 
-            while(Individuals.Count + children.Count < SIZE)
+            while(children.Count + NUM_SURVIVERS < SIZE)
             {
+                // choose two parents that will be allowed to mate:
                 int parent1 = random.Next(0, Individuals.Count);
                 int parent2 = random.Next(0, Individuals.Count); // TODO ensure that parent1 != parent2
 
@@ -56,6 +58,12 @@ namespace The_traveling_sales_man
 
                 children.Add(child1);
             }
+
+            // remove parents that are not going to make it to the next generation
+            Individuals.RemoveRange(NUM_SURVIVERS, Individuals.Count - NUM_SURVIVERS);
+
+            // run mutation on only the children
+            MutatePopulation(children);
 
             Individuals.AddRange(children);
         }
@@ -76,9 +84,9 @@ namespace The_traveling_sales_man
                 {
                     return true;
                 }
+                Console.WriteLine(Individuals[0].TotalDistance);
 
                 RunMatingSeason();
-                MutatePopulation();
             }
             Individuals.Sort(Individual.Compare);
             return false;
@@ -86,9 +94,5 @@ namespace The_traveling_sales_man
 
         public Individual BestSolution => Individuals[0];
 
-        public void PrintBestSolution()
-        {
-
-        }
     }
 }
