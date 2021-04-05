@@ -85,12 +85,13 @@ namespace The_traveling_sales_man
 
             int index1 = random.Next(0, parent1.Locations.Count - 1);
             int index2 = random.Next(index1 + 1, parent1.Locations.Count);
-            
+                        
             // adds the index to a temp list
             for(int i = index1; i != index2; i++)
             {
                 fromParent1.Add(parent1.Locations[i]);
             }
+
             // taking all IDs in parent 2 that has not been chosen from parent 1
             foreach (var parent2location in parent2.Locations)
             {

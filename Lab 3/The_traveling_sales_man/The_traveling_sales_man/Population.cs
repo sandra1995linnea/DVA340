@@ -5,10 +5,10 @@ namespace The_traveling_sales_man
 {
     class Population
     {
-        private const int SIZE = 100;
-        private const int NUM_PARENTS = 30;
-        private const int NUM_SURVIVERS = 2; // for elitism
-        private const int NUM_MUTATIONS = 10;
+        private const int SIZE = 1000;
+        private const int NUM_PARENTS = 500;
+        private const int NUM_SURVIVERS = 200; // for elitism
+        private const int NUM_MUTATIONS = 400;
 
         public List<Individual> Individuals { get; private set; }
 
@@ -51,11 +51,28 @@ namespace The_traveling_sales_man
             while(children.Count + NUM_SURVIVERS < SIZE)
             {
                 // choose two parents that will be allowed to mate:
+
                 int parent1 = random.Next(0, Individuals.Count);
-                int parent2 = random.Next(0, Individuals.Count); // TODO ensure that parent1 != parent2
+                for (int i = 0; i < Individuals.Count / 10; i++)
+                {
+                    int newIndex = random.Next(0, Individuals.Count);
+                    if(Individuals[newIndex].TotalDistance < Individuals[parent1].TotalDistance)
+                    {
+                        parent1 = newIndex;
+                    }
+                }
+
+                int parent2 = random.Next(0, Individuals.Count);
+                for (int i = 0; i < Individuals.Count / 10; i++)
+                {
+                    int newIndex = random.Next(0, Individuals.Count);
+                    if (Individuals[newIndex].TotalDistance < Individuals[parent1].TotalDistance && newIndex != parent1)
+                    {
+                        parent2 = newIndex;
+                    }
+                }
 
                 Individual child1 = Individual.CrossOver(Individuals[parent1], Individuals[parent2]);
-
                 children.Add(child1);
             }
 
@@ -84,7 +101,11 @@ namespace The_traveling_sales_man
                 {
                     return true;
                 }
-                Console.WriteLine(Individuals[0].TotalDistance);
+
+                double total = 0;
+                Individuals.ForEach(x => total += x.TotalDistance);
+
+                Console.WriteLine("Best: " + Individuals[0].TotalDistance.ToString("N0") + "\tAverage: " + (total / Individuals.Count).ToString("N0"));
 
                 RunMatingSeason();
             }
