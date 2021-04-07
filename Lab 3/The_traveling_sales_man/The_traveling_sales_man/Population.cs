@@ -5,10 +5,10 @@ namespace The_traveling_sales_man
 {
     class Population
     {
-        private const int SIZE = 1000;
-        private const int NUM_PARENTS = 500;
-        private const int NUM_SURVIVERS = 200; // for elitism
-        private const int NUM_MUTATIONS = 400;
+        private const int SIZE = 100;
+        private const int NUM_PARENTS = 20;
+        private const int NUM_SURVIVERS = 3; // for elitism
+        private const int NUM_MUTATIONS = 3;
 
         public List<Individual> Individuals { get; private set; }
 
