@@ -125,7 +125,6 @@ namespace Sudoku
         
         public void Print()
         {
-            // TODO!
             Console.WriteLine("+-----+-----+-----+-----+-----+-----+");
             for(int i = 0; i < 9; i++)
             {

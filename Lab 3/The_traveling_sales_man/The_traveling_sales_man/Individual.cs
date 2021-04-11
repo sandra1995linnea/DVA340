@@ -9,7 +9,8 @@ namespace The_traveling_sales_man
 
         public Individual(List<Location> locations)
         {
-            Locations = new List<Location>(locations);
+            Locations = new List<Location>();
+            locations.ForEach(x => Locations.Add(new Location(x)));
 
             Random rng = new Random();
             int n = locations.Count;
@@ -89,15 +90,15 @@ namespace The_traveling_sales_man
             // adds the index to a temp list
             for(int i = index1; i != index2; i++)
             {
-                fromParent1.Add(parent1.Locations[i]);
+                fromParent1.Add(new Location(parent1.Locations[i]));
             }
 
             // taking all IDs in parent 2 that has not been chosen from parent 1
             foreach (var parent2location in parent2.Locations)
             {
-                if(!fromParent1.Contains(parent2location))
+                if (!fromParent1.Exists(x => x.Id == parent2location.Id))
                 {
-                    fromParent2.Add(parent2location);
+                    fromParent2.Add(new Location(parent2location));
                 }
             }
 

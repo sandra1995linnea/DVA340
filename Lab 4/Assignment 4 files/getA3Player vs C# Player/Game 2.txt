@@ -1,0 +1,8 @@
+001  getA3Player moved 6 in 0.02600383758544922 sec.
+
+0     4 4 4 5 5 5
+
+      4 4 4 4 4 0    1
+
+404  C# Player performed an incorrect move (0)
+

@@ -1,0 +1,14 @@
+001  Sötis moved 1 in 0.057999610900878906 sec.
+
+0     4 5 5 5 5 0
+
+      4 4 4 4 4 4    0
+
+001  getA3Player moved 1 in 0.05399203300476074 sec.
+
+0     4 5 5 5 5 0
+
+      0 5 5 5 5 4    0
+
+404  Sötis performed an incorrect move (1)
+

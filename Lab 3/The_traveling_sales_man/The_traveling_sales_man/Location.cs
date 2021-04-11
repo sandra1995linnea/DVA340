@@ -10,6 +10,17 @@ namespace The_traveling_sales_man
             X = x;
             Y = y;
         }
+
+        /// <summary>
+        /// Copy constructor
+        /// </summary>
+        public Location(Location other)
+        {
+            Id = other.Id;
+            X = other.X;
+            Y = other.Y;
+        }
+
         public int Id { get; }
         public double X { get; }
         public double Y { get; }

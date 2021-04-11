@@ -7,8 +7,8 @@ namespace The_traveling_sales_man
     {
         private const int SIZE = 100;
         private const int NUM_PARENTS = 20;
-        private const int NUM_SURVIVERS = 3; // for elitism
-        private const int NUM_MUTATIONS = 3;
+        private const int NUM_SURVIVERS = 5; // for elitism
+        private const int NUM_MUTATIONS = 50;
 
         public List<Individual> Individuals { get; private set; }
 
@@ -43,34 +43,46 @@ namespace The_traveling_sales_man
             }            
         }
 
+        /// <summary>
+        /// Randomly selects a zero based index based on a Linear order randomized lottery scheme
+        /// </summary>
+        /// <param name="numberOfIndividuals"></param>
+        /// <returns></returns>
+        private int LinearOrderSelection(int numberOfIndividuals)
+        {
+            Random rnd = new Random();
+
+            // The worst indivilual gets one lottery ticket, the second worst gets two and so on.
+            int numberOfTickets = 0;
+            for(int i = 1; i <= numberOfIndividuals; i++)
+            {
+                numberOfTickets += i;
+            }
+
+            int ticket = rnd.Next(numberOfTickets) + 1;
+            int sum = 0;
+
+            for (int i = 1; i <= numberOfIndividuals; i++)
+            {
+                sum += i;
+                if (sum >= ticket)
+                {
+                    return i - 1;
+                }
+            }
+            return 0;
+        }
+
         private void RunMatingSeason()
         {
-            Random random = new Random();
             List<Individual> children = new List<Individual>();
 
             while(children.Count + NUM_SURVIVERS < SIZE)
             {
                 // choose two parents that will be allowed to mate:
 
-                int parent1 = random.Next(0, Individuals.Count);
-                for (int i = 0; i < Individuals.Count / 10; i++)
-                {
-                    int newIndex = random.Next(0, Individuals.Count);
-                    if(Individuals[newIndex].TotalDistance < Individuals[parent1].TotalDistance)
-                    {
-                        parent1 = newIndex;
-                    }
-                }
-
-                int parent2 = random.Next(0, Individuals.Count);
-                for (int i = 0; i < Individuals.Count / 10; i++)
-                {
-                    int newIndex = random.Next(0, Individuals.Count);
-                    if (Individuals[newIndex].TotalDistance < Individuals[parent1].TotalDistance && newIndex != parent1)
-                    {
-                        parent2 = newIndex;
-                    }
-                }
+                int parent1 = LinearOrderSelection(Individuals.Count);
+                int parent2 = LinearOrderSelection(Individuals.Count);
 
                 Individual child1 = Individual.CrossOver(Individuals[parent1], Individuals[parent2]);
                 children.Add(child1);
