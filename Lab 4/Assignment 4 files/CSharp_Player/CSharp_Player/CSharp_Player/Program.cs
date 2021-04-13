@@ -82,8 +82,11 @@ namespace CSharp_Player
                         j += 2;
                     }
 
+                    // TODO we might choose player incorrectly:
+                    Player player = (playerTurn == 2 ? Player.MaxPlayer : Player.MinPlayer);
+
                     //Using your intelligent bot, assign a move to "move".
-                    string move = Bot.MiniMaxDescision(board);
+                    string move = Bot.MiniMaxDescision(board, player);
                                         
                     byte[] msg = System.Text.Encoding.Default.GetBytes(move);
                     client.Send(msg);
