@@ -35,16 +35,20 @@ namespace CSharp_Player
                 if(newPlayer == Player.MinPlayer)
                 {
                     newValue = MinValue(newBoard, 0);
+                    if (newValue < bestValue)
+                    {
+                        bestValue = newValue;
+                        bestAction = action;
+                    }
                 }
                 else
                 {
                     newValue = MaxValue(newBoard, 0);
-                }
-                
-                if (newValue > bestValue)
-                {
-                    bestValue = newValue;
-                    bestAction = action;
+                    if (newValue > bestValue)
+                    {
+                        bestValue = newValue;
+                        bestAction = action;
+                    }
                 }
             }
 
@@ -262,8 +266,8 @@ namespace CSharp_Player
         /// </summary>
         /// <param name="board"></param>
         /// <returns></returns>
-        private static int Eval(int[] board, Player player) => 
-            (player == Player.MaxPlayer ? board[6] - board[13] : board[13] - board[6]);
+        private static int Eval(int[] board, Player player) => board[6] - board[13];
+          //  (player == Player.MaxPlayer ? board[6] - board[13] : board[13] - board[6]);
 
     }
 }
