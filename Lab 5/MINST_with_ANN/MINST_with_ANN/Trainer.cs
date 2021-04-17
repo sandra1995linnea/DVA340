@@ -4,7 +4,6 @@ namespace MINST_with_ANN
 {
     public static class Trainer
     {
-
         /// <summary>
         /// Trains the net. Stops when it is good enough or has been trained for maxIterations
         /// </summary>
@@ -13,7 +12,7 @@ namespace MINST_with_ANN
         /// <param name="validationSets">Data used to see how well the net is</param>
         /// <param name="maxIterations">Maximum number of iterations of the training data</param>
         /// <param name="approvalLimit">Between 0 and 1: when this percentage has been reached, training will stop</param>
-        public static void Train(Net net, Data[] trainingSets, Data[] validationSets, int maxIterations, float approvalLimit)
+        public static bool Train(Net net, Data[] trainingSets, Data[] validationSets, int maxIterations, float approvalLimit)
         {
             float percentage;
             for(int i = 0; i < maxIterations; i++)
@@ -29,11 +28,12 @@ namespace MINST_with_ANN
                 if (percentage >= approvalLimit)
                 {
                     Console.WriteLine("Approval limit reached!");
-                    break;
+                    return true;
                 }
             }
 
-            Console.WriteLine("Approval limit not reached");
+            Console.WriteLine("Approval limit NOT reached");
+            return false;
         }
 
         /// <summary>
@@ -50,9 +50,7 @@ namespace MINST_with_ANN
                     correct++;
                 }
             }
-
             return (float)correct / validationSets.Length;
         }
-
     }
 }

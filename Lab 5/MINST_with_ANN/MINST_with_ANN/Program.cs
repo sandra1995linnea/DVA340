@@ -4,12 +4,12 @@ namespace MINST_with_ANN
 {
     class Program
     {
-        private const int NEURONS_IN_HIDDEN_LAYER = 8; // TODO
+        private const int NEURONS_IN_HIDDEN_LAYER = 24;
         private const float LEARNING_RATE = (float)0.03;
 
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Console.WriteLine("Running training...");
 
             var allData = Data.ReadFile();
 
@@ -38,8 +38,18 @@ namespace MINST_with_ANN
 
             var net = new Net(3, trainingSet[0].Pixels.Length, 10, NEURONS_IN_HIDDEN_LAYER, LEARNING_RATE);
 
-            Trainer.Train(net, trainingSet, validationSet, 20, (float)0.8);
+            bool result = Trainer.Train(net, trainingSet, validationSet, 20, (float)0.8);
+            
+            if (!result)
+            {
+                return;
+            }
 
+            Console.WriteLine("Testing...");
+
+            float percentage = Trainer.Test(net, testingSet);
+
+            Console.WriteLine((percentage * 100.0).ToString("N1") + "% correct");
         }
     }
 }

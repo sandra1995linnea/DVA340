@@ -6,7 +6,6 @@ namespace MINST_with_ANN
     {
         private readonly Neuron[] neurons;
         
-
         public Layer(int numberOfNeurons, int numberOfInputs, Func<float, float> activationFunction, 
             Func<float, float> derivativeOfActivationFunction, float learningRate)
         {
@@ -31,7 +30,6 @@ namespace MINST_with_ANN
         }
 
         public float[] Outputs { get; private set; }
-        
         public int NumberOfInputs { get; }
 
         /// <summary>
