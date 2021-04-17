@@ -4,7 +4,7 @@ namespace MINST_with_ANN
 {
     class Program
     {
-        private const int NEURONS_IN_HIDDEN_LAYER = 10; // TODO
+        private const int NEURONS_IN_HIDDEN_LAYER = 12; // TODO
 
         static void Main()
         {
@@ -37,7 +37,7 @@ namespace MINST_with_ANN
 
             var net = new Net(3, trainingSet[0].Pixels.Length, 10, NEURONS_IN_HIDDEN_LAYER);
 
-            net.Update(trainingSet[0].Pixels);
+            int number = net.IdentifyNumber(trainingSet[0].Pixels);
         }
     }
 }

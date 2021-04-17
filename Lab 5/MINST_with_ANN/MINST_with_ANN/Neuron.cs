@@ -12,6 +12,16 @@ namespace MINST_with_ANN
             Weights = new float[numberOfInputs + 1];
 
             // TODO set weights to small random numbers
+            Random random = new Random();
+
+            float rand;
+
+            for(int i = 0; i < Weights.Length; i++)
+            {
+                rand = random.Next(1000); // random 0 to 1000
+                rand /= 5000; // random 0 to 0.2
+                Weights[i] = rand - (float)0.1; // random -0.1 to 0.1
+            }
         }
 
         public float Update(float[] inputs)

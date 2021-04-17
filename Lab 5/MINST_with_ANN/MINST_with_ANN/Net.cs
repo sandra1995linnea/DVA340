@@ -57,6 +57,11 @@ namespace MINST_with_ANN
             }
         }
 
+        /// <summary>
+        /// Runs inputs through the neural network
+        /// </summary>
+        /// <param name="inputs"></param>
+        /// <returns></returns>
         public float[] Update(float[] inputs)
         {
             if(inputs.Length != Layers[0].NumberOfInputs)
@@ -78,6 +83,30 @@ namespace MINST_with_ANN
 
             return Outputs;
         }
+
+        /// <summary>
+        /// Returns an int as identified by the neural network
+        /// </summary>
+        /// <param name="inputs">Pixel data</param>
+        /// <returns>The identified number, 0 to 9</returns>
+        public int IdentifyNumber(float[] inputs)
+        {
+            Update(inputs);
+
+            int index = 0;
+            float highestOutput = Outputs[0];
+
+            for (int i = 1; i < Outputs.Length; i++)
+            {
+                if(Outputs[i] > highestOutput)
+                {
+                    index = i;
+                    highestOutput = Outputs[i];
+                }
+            }
+            return index;
+        }
+
 
         public Layer[] Layers { get; }
 
