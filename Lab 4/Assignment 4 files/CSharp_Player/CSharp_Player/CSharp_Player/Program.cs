@@ -10,28 +10,19 @@ namespace CSharp_Player
     {
         static void Main(string[] args)
         {
-
-            //System.Net.Sockets.TcpClient socket = new System.Net.Sockets.TcpClient();
-            
-            //IPHostEntry ipHost = Dns.GetHostEntry("127.0.0.1");
-            //IPAddress ipAddr = ipHost.AddressList[0];
-
             IPAddress ipAddr = IPAddress.Parse("127.0.0.1");
-
             IPEndPoint ipEndPoint = new IPEndPoint(ipAddr, 30000);
             Socket client = new Socket(ipAddr.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-            //client = new Socket(ipAddr.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
 
             //Useful variables
             int gameEnd = 0;
             int maxTimeResponse = 5;
 
             // Player Name
-            string playerName = "Sötis";
+            string playerName = "Sandra";
 
             // Connecting to the server
             try {
-                //socket.Connect(HOST, PORT);
                 client.Connect(ipEndPoint);
             } catch (Exception e) {
                 Console.WriteLine("Error when connecting to the server!");

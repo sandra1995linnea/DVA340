@@ -61,7 +61,7 @@ namespace CSharp_Player
         {
             if(CutoffTest(board, depth))
             {
-                return Eval(board);
+                return Eval(board, Player.MaxPlayer);
             }
             else
             {
@@ -90,7 +90,7 @@ namespace CSharp_Player
         {
             if(CutoffTest(board, depth))
             {
-                return Eval(board);
+                return Eval(board, Player.MinPlayer);
             }
             else
             {
@@ -262,7 +262,8 @@ namespace CSharp_Player
         /// </summary>
         /// <param name="board"></param>
         /// <returns></returns>
-        private static int Eval(int[] board) => board[6] - board[13];
+        private static int Eval(int[] board, Player player) => 
+            (player == Player.MaxPlayer ? board[6] - board[13] : board[13] - board[6]);
 
     }
 }
