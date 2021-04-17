@@ -4,7 +4,9 @@ namespace MINST_with_ANN
 {
     class Program
     {
-        static void Main(string[] args)
+        private const int NEURONS_IN_HIDDEN_LAYER = 10; // TODO
+
+        static void Main()
         {
             Console.WriteLine("Hello World!");
 
@@ -33,7 +35,9 @@ namespace MINST_with_ANN
                 testingSet[i] = allData[trainingSetSize + validationSetSize + i];
             }
 
+            var net = new Net(3, trainingSet[0].Pixels.Length, 10, NEURONS_IN_HIDDEN_LAYER);
 
+            net.Update(trainingSet[0].Pixels);
         }
     }
 }
