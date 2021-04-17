@@ -9,7 +9,7 @@ namespace MINST_with_ANN
 
         static void Main(string[] args)
         {
-            Console.WriteLine("Running training...");
+            Console.WriteLine("Reading data...");
 
             var allData = Data.ReadFile();
 
@@ -36,6 +36,7 @@ namespace MINST_with_ANN
                 testingSet[i] = allData[trainingSetSize + validationSetSize + i];
             }
 
+            Console.WriteLine("Running training...");
             var net = new Net(3, trainingSet[0].Pixels.Length, 10, NEURONS_IN_HIDDEN_LAYER, LEARNING_RATE);
 
             bool result = Trainer.Train(net, trainingSet, validationSet, 20, (float)0.8);
