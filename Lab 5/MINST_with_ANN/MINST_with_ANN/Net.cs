@@ -1,12 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace MINST_with_ANN
 {
     public class Net
     {
-        public Net(int numberOfLayers, int numberOfInputs, int numberOfOutputs, int numberOfNeuronsInHiddenLayers)
+        private static float Sigmoid(float x) => 1 / (1 + (float)Math.Exp(-x));
+        private static float DerivativeOfSigmoid(float x)
+        {
+            float sig = Sigmoid(x);
+            return sig * (1 - sig);
+        }
+
+        private readonly Func<float, float> activationFunction;
+        private readonly Func<float, float> derivativeOfActivationFunction;
+
+        public Net(int numberOfLayers, int numberOfInputs, int numberOfOutputs, int numberOfNeuronsInHiddenLayers, float learningRate)
         {
             if (numberOfLayers < 1)
             {
@@ -26,7 +34,8 @@ namespace MINST_with_ANN
             }
 
             // use the sigmoid function as our activation function
-            Func<float, float> activationFunction = (float x) => 1 / (1 + (float)Math.Exp(-x));
+            activationFunction = Sigmoid;
+            derivativeOfActivationFunction = DerivativeOfSigmoid;
 
             Layers = new Layer[numberOfLayers];
 
@@ -53,7 +62,7 @@ namespace MINST_with_ANN
                     numberOfInputsForLayer = numberOfNeuronsInHiddenLayers;
                 }
 
-                Layers[i] = new Layer(numberOfNeurons, numberOfInputsForLayer, activationFunction);
+                Layers[i] = new Layer(numberOfNeurons, numberOfInputsForLayer, activationFunction, derivativeOfActivationFunction, learningRate);
             }
         }
 
@@ -85,6 +94,38 @@ namespace MINST_with_ANN
         }
 
         /// <summary>
+        /// Runs one backpropagation run, given the inputs and expected outputs,
+        /// in order to update the weights of each neuron
+        /// </summary>
+        /// <param name="inputs"></param>
+        /// <param name="expectedOutput"></param>
+        public void BackProp(float[] inputs, float[] expectedOutput)
+        {
+            if(inputs.Length != Layers[0].NumberOfInputs)
+            {
+                throw new ArgumentException("Wrong number of inputs!");
+            }
+            if (expectedOutput.Length != Layers[^1].Outputs.Length)
+            {
+                throw new ArgumentException("Wrong number of expected outputs!");
+            }
+
+            // calculate outputs
+            Update(inputs);
+
+            // calculate error terms for output layer:
+            // this will also update weights
+            Layers[^1].CalculateErrorTerms(expectedOutput);
+
+            // calculate error terms for all other layers:
+            // this will also update weights
+            for(int i = Layers.Length - 2; i >= 0; i--) // start at the second to last layer and loop backwards
+            {
+                Layers[i].CalculateErrorTerms(Layers[i + 1]);
+            }
+        }
+
+        /// <summary>
         /// Returns an int as identified by the neural network
         /// </summary>
         /// <param name="inputs">Pixel data</param>
@@ -107,6 +148,19 @@ namespace MINST_with_ANN
             return index;
         }
 
+        /// <summary>
+        /// Calculates expected output from the net and runs backprop once
+        /// </summary>
+        /// <param name="inputs"></param>
+        /// <param name="expectedNumber"></param>
+        public void Train(float[] inputs, int expectedNumber)
+        {
+            // sets all values of the array 'expected' to 0 except the one we expect, it is set to 1
+            float[] expected = new float[10];
+            expected[expectedNumber] = 1;
+
+            BackProp(inputs, expected);
+        }
 
         public Layer[] Layers { get; }
 
