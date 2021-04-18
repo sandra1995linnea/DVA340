@@ -19,6 +19,7 @@ namespace MINST_with_ANN
             Random random = new Random();
             float rand;
 
+            // give weights random small values:
             for(int i = 0; i < Weights.Length; i++)
             {
                 rand = random.Next(1000); // random 0 to 1000

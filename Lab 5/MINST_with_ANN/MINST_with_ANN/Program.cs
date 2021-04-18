@@ -47,9 +47,7 @@ namespace MINST_with_ANN
             }
 
             Console.WriteLine("Testing...");
-
             float percentage = Trainer.Test(net, testingSet);
-
             Console.WriteLine((percentage * 100.0).ToString("N1") + "% correct");
         }
     }

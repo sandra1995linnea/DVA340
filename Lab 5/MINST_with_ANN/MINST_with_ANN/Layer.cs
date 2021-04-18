@@ -49,8 +49,8 @@ namespace MINST_with_ANN
         /// Calculates error terms, assuming this layer is NOT an output layer.
         /// This will also update weights
         /// </summary>
-        /// <param name="layer"></param>
-        internal void CalculateErrorTerms(Layer layer)
+        /// <param name="downstreamLayer">The next layer downstream (towards the output)</param>
+        internal void CalculateErrorTerms(Layer downstreamLayer)
         {
             float sumErrorTermsTimesWeights;
             for (int i = 0; i < neurons.Length; i++)
@@ -58,9 +58,9 @@ namespace MINST_with_ANN
                 sumErrorTermsTimesWeights = 0;
 
                 // loop through all neurons in the downstream layer, summing up the "error term * weight"
-                for(int j = 0; j < layer.neurons.Length; j++)
+                for(int j = 0; j < downstreamLayer.neurons.Length; j++)
                 {
-                    sumErrorTermsTimesWeights += layer.neurons[j].ErrorTerm * layer.neurons[j].Weights[i + 1];
+                    sumErrorTermsTimesWeights += downstreamLayer.neurons[j].ErrorTerm * downstreamLayer.neurons[j].Weights[i + 1];
                 }
 
                 neurons[i].CalculateErrorTermInHiddenLayer(sumErrorTermsTimesWeights);

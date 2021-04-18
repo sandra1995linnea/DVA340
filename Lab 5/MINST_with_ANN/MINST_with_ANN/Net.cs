@@ -30,7 +30,7 @@ namespace MINST_with_ANN
             }
             if (numberOfNeuronsInHiddenLayers < 1)
             {
-                throw new ArgumentException("Come on, you gotta have at least one neuron in the layer!");
+                throw new ArgumentException("Come on, you gotta have at least one neuron in the hidden layer!");
             }
 
             // use the sigmoid function as our activation function
@@ -67,7 +67,7 @@ namespace MINST_with_ANN
         }
 
         /// <summary>
-        /// Runs inputs through the neural network
+        /// Runs inputs through the neural network to generate output from the net
         /// </summary>
         /// <param name="inputs"></param>
         /// <returns></returns>
@@ -75,7 +75,7 @@ namespace MINST_with_ANN
         {
             if(inputs.Length != Layers[0].NumberOfInputs)
             {
-                throw new ArgumentException("Wrong length of inputs");
+                throw new ArgumentException("Wrong length of inputs!");
             }
 
             // feed inputs into the input layer
