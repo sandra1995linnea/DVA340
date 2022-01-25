@@ -1,8 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace The_traveling_sales_man
+namespace TravelingSalesMan_GeneticAlgorithm
 {
-    public class Location
+    class Location
     {
         public Location(int id, double x, double y)
         {
@@ -11,21 +15,18 @@ namespace The_traveling_sales_man
             Y = y;
         }
 
-        /// <summary>
-        /// Copy constructor
-        /// </summary>
         public Location(Location other)
         {
             Id = other.Id;
             X = other.X;
             Y = other.Y;
         }
-
         public int Id { get; }
         public double X { get; }
         public double Y { get; }
 
-        public static double Distance(Location location1, Location location2) =>
-            Math.Sqrt(Math.Pow(location2.X - location1.X, 2) + Math.Pow(location2.Y - location1.Y, 2));
+        //calculates the distance between two locations
+        public  double DistanceTo(Location other) => 
+            Math.Sqrt(Math.Pow(X - other.X, 2) + Math.Pow(Y - other.Y, 2));
     }
 }

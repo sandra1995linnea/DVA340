@@ -4,6 +4,8 @@ namespace MINST_with_ANN
 {
     class Neuron
     {
+        private const float DECAY_RATE = (float)0.0001; // proportion of weight which is decayed away each update
+
         private readonly Func<float, float> activationFunction;
         private readonly Func<float, float> derivativeOfActivationFunction;
         private readonly float learningRate;
@@ -82,10 +84,16 @@ namespace MINST_with_ANN
             // update the first weight, which always has 1 as input:
             Weights[0] += learningRate * ErrorTerm;
 
+            // use weight decay
+        //    Weights[0] *= 1 - DECAY_RATE;
+
             // for all other weights:
-            for(int i = 1; i < Weights.Length; i++)
+            for (int i = 1; i < Weights.Length; i++)
             {
                 Weights[i] += learningRate * ErrorTerm * Inputs[i - 1];
+
+                // use weight decay
+          //      Weights[i] *= 1 - DECAY_RATE;
             }
         }
 
