@@ -7,7 +7,7 @@ namespace TravelingSalesMan_GeneticAlgorithm
     class Individual
     {
         private double? totaldistnace = null;
-        private List<Location> locations = new List<Location>();
+        private List<Location> locations;
         internal List<Location> Locations => locations;
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace TravelingSalesMan_GeneticAlgorithm
         }
 
         //takes two individuals from the population and creates a new offspring
-        public static Individual Crossover(Individual parent1, Individual parent2)
+        public static Individual CrossoverAndMutate(Individual parent1, Individual parent2)
         {
             Location[] Genes = new Location[parent1.Locations.Count];            
             Random randompos = new Random();
@@ -77,10 +77,10 @@ namespace TravelingSalesMan_GeneticAlgorithm
                 Genes[i] = fromParent2[i];
             }
 
-            for(int j = index2 + 1; j < Genes.Length; j++)
+            for(int i = 0; i < fromParent2.Count - index1; i++)
             {
                 //adds the rest into the array from where we stoped
-                Genes[j] = fromParent2[j - index1 - 1];
+                Genes[i + index2 + 1] = fromParent2[i + index1];
             }
 
             Individual individual = new Individual(Genes.ToList());
