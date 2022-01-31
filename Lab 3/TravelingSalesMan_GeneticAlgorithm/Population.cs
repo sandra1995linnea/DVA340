@@ -8,6 +8,7 @@ namespace TravelingSalesMan_GeneticAlgorithm
         private const int POPULATION_SIZE = 100;
         private const int NUMBER_OF_PARENTS = 20;
         private List<Individual> individuals;
+        private readonly Random random;
 
         /// <summary>
         /// The fitness value (total distance) of the best individual
@@ -19,11 +20,12 @@ namespace TravelingSalesMan_GeneticAlgorithm
         /// </summary>
         public Population(List<Location> locations)
         {
+            random = new Random();
             individuals = new List<Individual>();
 
             for (int i = 0; i < POPULATION_SIZE; i++)
             {
-                var individual = new Individual(locations);
+                var individual = new Individual(locations, random);
                 individual.Randomize();
                 individuals.Add(individual);
             }
@@ -32,43 +34,15 @@ namespace TravelingSalesMan_GeneticAlgorithm
         //select the two best individuals and make them parents
         private List<Individual> Selection()
         {
-            List<Individual> parents = new List<Individual>();
-
-
-
-            /////////////////////
-            ///
+            // sorting the population from best to worst
             individuals.Sort(Compare);
 
-            ///////////////
+            // grab the best NUMBER_OF_PARENTS individuals and put them in the 'parents' list:
+            List<Individual> parents = individuals.GetRange(0, NUMBER_OF_PARENTS);
 
-            foreach (var individual in individuals)
-            {
-                if(parents.Count < NUMBER_OF_PARENTS)
-                {
-                    parents.Add(individual);
+            // update best fitness, easy since the parents are sorted
+            BestFittness = parents[0].TotalDistance;
 
-                    //sorting the parents from worst to best
-                    parents.Sort(Compare);
-                }
-                else
-                {
-                    // TODO correct this algoritm!
-                    foreach(var parent in parents)
-                    {
-                        //sorting the parents from worst to best
-                        parents.Sort(Compare);
-
-                        if(parent.TotalDistance > individual.TotalDistance)
-                        {
-                            //check which of the parents that has the worst distance, replace
-                            parents.Remove(parent);
-                            parents.Add(individual);
-                            break;
-                        }
-                    }
-                }
-            }
             return parents;
         }
 
@@ -85,20 +59,10 @@ namespace TravelingSalesMan_GeneticAlgorithm
 
         public void NextGeneration()
         {
-            Random random = new Random();
             int index1, index2;
             List<Individual> nextGeneration = new List<Individual>();
 
-            List<Individual> parents = Selection(); // TODO: Couldn't Selection() also set BestFittness?
-
-            // find best fitness:
-            foreach (var parent in parents)
-            {
-                if(parent.TotalDistance < BestFittness)
-                {
-                    BestFittness = parent.TotalDistance;
-                }
-            }
+            List<Individual> parents = Selection();
 
             // Create new generation from the parents
             for (int i = 0; i < POPULATION_SIZE; i++)
@@ -112,7 +76,7 @@ namespace TravelingSalesMan_GeneticAlgorithm
                     index2 = random.Next(0, parents.Count - 1);
                 }
 
-                nextGeneration.Add(Individual.CrossoverAndMutate(parents[index1], parents[index2]));
+                nextGeneration.Add(Individual.CrossoverAndMutate(parents[index1], parents[index2], random));
             }
             individuals = nextGeneration;
         }

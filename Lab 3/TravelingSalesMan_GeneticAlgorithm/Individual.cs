@@ -7,6 +7,7 @@ namespace TravelingSalesMan_GeneticAlgorithm
     class Individual
     {
         private double? totaldistnace = null;
+        private readonly Random random;
         private List<Location> locations;
         internal List<Location> Locations => locations;
 
@@ -14,9 +15,10 @@ namespace TravelingSalesMan_GeneticAlgorithm
         /// Generates individual with given locations
         /// </summary>
         /// <param name="locations">Locations to be set</param>
-        public Individual(List<Location> locations)
+        public Individual(List<Location> locations, Random random)
         {
             this.locations = locations;
+            this.random = random;
         }
 
         /// <summary>
@@ -25,36 +27,26 @@ namespace TravelingSalesMan_GeneticAlgorithm
         internal void Randomize()
         {
             List<Location> randomLocations = new List<Location>();
-            Random random = new Random();
             int insertIndex;
 
             foreach (var location in locations)
             {
                 insertIndex = random.Next(0, randomLocations.Count);
-                
-                if(randomLocations.Count < 1)
-                {
-                    randomLocations.Add(location);
-                }
-                else
-                {
-                    randomLocations.Insert(insertIndex, location);
-                }
+                randomLocations.Insert(insertIndex, location);
             }
 
             locations = randomLocations; 
         }
 
         //takes two individuals from the population and creates a new offspring
-        public static Individual CrossoverAndMutate(Individual parent1, Individual parent2)
+        public static Individual CrossoverAndMutate(Individual parent1, Individual parent2, Random random)
         {
-            Location[] Genes = new Location[parent1.Locations.Count];            
-            Random randompos = new Random();
+            Location[] Genes = new Location[parent1.Locations.Count];
 
             //gives the intervall between the positions we can accept a random index
-            int index1 = randompos.Next(1, parent1.Locations.Count - 3);
+            int index1 = random.Next(1, parent1.Locations.Count - 3);
             //start from the first random index
-            int index2 = randompos.Next(index1 + 1, parent1.Locations.Count - 2);
+            int index2 = random.Next(index1 + 1, parent1.Locations.Count - 2);
 
             for(int i = index1; i <= index2; i++)
             {
@@ -83,7 +75,7 @@ namespace TravelingSalesMan_GeneticAlgorithm
                 Genes[i + index2 + 1] = fromParent2[i + index1];
             }
 
-            Individual individual = new Individual(Genes.ToList());
+            Individual individual = new Individual(Genes.ToList(), random);
             individual.Mutate();
             return individual;
         }
