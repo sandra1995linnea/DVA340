@@ -6,7 +6,8 @@ namespace TravelingSalesMan_GeneticAlgorithm
 {
     class Individual
     {
-        private double? totaldistnace = null;
+        private const double MUTATION_PROBABILITY = 0.001;
+        private double? totalDistance = null;
         private readonly Random random;
         private List<Location> locations;
         internal List<Location> Locations => locations;
@@ -20,6 +21,8 @@ namespace TravelingSalesMan_GeneticAlgorithm
             this.locations = locations;
             this.random = random;
         }
+
+        public double FitnessValue => 1 / TotalDistance;
 
         /// <summary>
         /// Randomizes the DNA of the individual
@@ -54,13 +57,6 @@ namespace TravelingSalesMan_GeneticAlgorithm
                 Genes[i] = parent1.Locations[i];
             }
 
-            /*
-             * Loop through the array of genes and in a nested loop, loop through parent 2
-             * Check if the element at the current index in parent 2 is the same as the elements already 
-             * inserted into the array from parent1
-             * Insert into the array of genes from parent2
-             * */
-
             // gets all locations in parent2 that have not already been taken from parent 1
             var fromParent2 = parent2.Locations.FindAll(x => !Genes.Contains(x));
 
@@ -76,10 +72,20 @@ namespace TravelingSalesMan_GeneticAlgorithm
             }
 
             Individual individual = new Individual(Genes.ToList(), random);
-            individual.Mutate();
+            if(ShouldMutate(random))
+            {
+                individual.Mutate();
+            }
+            
+
             return individual;
         }
 
+        private static bool ShouldMutate(Random random)
+        {
+            float randomnumber = random.Next(0, 1);
+            return randomnumber < MUTATION_PROBABILITY;
+        }
         //select two random positions in the offspring and exchange the elements
         public void Mutate()
         {
@@ -99,25 +105,25 @@ namespace TravelingSalesMan_GeneticAlgorithm
         {
             get
             {
-                if(totaldistnace == null)
+                if(totalDistance == null)
                 {
-                    totaldistnace = 0;
+                    totalDistance = 0;
                     Location previous = null;
 
                     foreach(var location in Locations)
                     {
                         if (previous != null)
                         {
-                            totaldistnace += previous.DistanceTo(location);
+                            totalDistance += previous.DistanceTo(location);
                         }
                         previous = location;
                     }
 
                     //calculates the distance between the first and the last location
-                    totaldistnace += Locations.First().DistanceTo(Locations.Last());
+                    totalDistance += Locations.First().DistanceTo(Locations.Last());
                 }
                 
-                return (double)totaldistnace;
+                return (double)totalDistance;
             }
         }
 

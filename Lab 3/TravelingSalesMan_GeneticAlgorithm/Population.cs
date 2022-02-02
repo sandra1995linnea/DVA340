@@ -6,7 +6,7 @@ namespace TravelingSalesMan_GeneticAlgorithm
     class Population
     {
         private const int POPULATION_SIZE = 100;
-        private const int NUMBER_OF_PARENTS = 20;
+        private const int NUMBER_OF_PARENTS = 40;
         private List<Individual> individuals;
         private readonly Random random;
 
@@ -31,7 +31,7 @@ namespace TravelingSalesMan_GeneticAlgorithm
             }
         }
 
-        //select the two best individuals and make them parents
+        //select the best individuals
         private List<Individual> Selection()
         {
             // sorting the population from best to worst
@@ -61,25 +61,59 @@ namespace TravelingSalesMan_GeneticAlgorithm
         {
             int index1, index2;
             List<Individual> nextGeneration = new List<Individual>();
+            List<double> ProbabilityList = new List<double>();
+            double probability = 0.0;
+            double sum0fFitness = 0.0;
 
             List<Individual> parents = Selection();
+
+            foreach(var parent in parents)
+            {
+                sum0fFitness += parent.FitnessValue;
+            }
+
+            foreach(var parent in parents)
+            {
+                probability = parent.FitnessValue / sum0fFitness;
+                ProbabilityList.Add(probability);
+            }
 
             // Create new generation from the parents
             for (int i = 0; i < POPULATION_SIZE; i++)
             {
-                index1 = random.Next(0, parents.Count - 1);
-                index2 = random.Next(0, parents.Count - 1);
-
-                // ensure that we take two diffrent parents
-                while (index1 == index2)
-                {
-                    index2 = random.Next(0, parents.Count - 1);
-                }
-
+                ChooseParentIndices(out index1, out index2, ProbabilityList, random);
+                
                 nextGeneration.Add(Individual.CrossoverAndMutate(parents[index1], parents[index2], random));
             }
             individuals = nextGeneration;
         }
-        
+
+        // choose two indexes
+        private void ChooseParentIndices(out int index1, out int index2, List<double> ProbabilityList, Random random)
+        {   
+            index1 = ChooseIndex(ProbabilityList, random);
+
+            do
+            {
+                index2 = ChooseIndex(ProbabilityList, random);
+            } while (index1 == index2);
+        }
+
+        private int ChooseIndex(List<double> probabilityList, Random random)
+        {
+            double r = random.NextDouble();
+            double probability_sum = 0.0;
+
+            for (int i = 0; i < probabilityList.Count; i++)
+            {
+                probability_sum += probabilityList[i];
+                if(probability_sum >= r)
+                {
+                    return i;
+                }
+            }
+
+            return probabilityList.Count - 1;
+        }
     }
 }
