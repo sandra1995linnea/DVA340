@@ -7,9 +7,10 @@ namespace TravelingSalesMan_GeneticAlgorithm
     {
         static void Main(string[] args)
         {
+            const double MUTATION_PROBABILITY = 0.2;
             Graph graph = new Graph();
             List<Location> locations = graph.GenerateLocations();
-            Population population = new Population(locations);
+            Population population = new Population(locations, new Crossover(MUTATION_PROBABILITY));
 
             while(population.BestFittness > 9000)
             {
@@ -21,6 +22,8 @@ namespace TravelingSalesMan_GeneticAlgorithm
             //print the best solution:
 
             Console.WriteLine("Best induvidial: ");
+            Console.WriteLine("Press a button to exit");
+            Console.ReadKey();
         }
     }
 }

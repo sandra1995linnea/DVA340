@@ -10,6 +10,7 @@ namespace TravelingSalesMan_GeneticAlgorithm
         private const int NUMBER_OF_PARENTS = 200;
         private List<Individual> individuals;
         private readonly Random random;
+        private readonly ICrossover crossover;
 
         /// <summary>
         /// The fitness value (total distance) of the best individual
@@ -19,7 +20,7 @@ namespace TravelingSalesMan_GeneticAlgorithm
         /// <summary>
         /// Generates an initial population of random individuals
         /// </summary>
-        public Population(List<Location> locations)
+        public Population(List<Location> locations, ICrossover crossover)
         {
             random = new Random();
             individuals = new List<Individual>();
@@ -30,6 +31,8 @@ namespace TravelingSalesMan_GeneticAlgorithm
                 individual.Randomize();
                 individuals.Add(individual);
             }
+
+            this.crossover = crossover;
         }
 
         //select the best individuals
@@ -91,7 +94,7 @@ namespace TravelingSalesMan_GeneticAlgorithm
             {
                 ChooseParentIndices(out index1, out index2, ProbabilityList, random);
                 
-                nextGeneration.Add(Individual.CrossoverAndMutate(parents[index1], parents[index2], random));
+                nextGeneration.Add(crossover.CrossoverAndMutate(parents[index1], parents[index2], random));
             }
             individuals = nextGeneration;
         }
