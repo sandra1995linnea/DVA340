@@ -6,8 +6,8 @@ namespace TravelingSalesMan_GeneticAlgorithm
     class Population
     {
         private const int POPULATION_SIZE = 500;
-        private const int SURVIVORS = 30; //elitism
-        private const int NUMBER_OF_PARENTS = 100;
+        private const int SURVIVORS = 60; //elitism
+        private const int NUMBER_OF_PARENTS = 200;
         private List<Individual> individuals;
         private readonly Random random;
 

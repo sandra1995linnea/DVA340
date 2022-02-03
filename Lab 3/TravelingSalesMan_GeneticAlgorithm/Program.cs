@@ -19,6 +19,8 @@ namespace TravelingSalesMan_GeneticAlgorithm
             }
 
             //print the best solution:
+
+            Console.WriteLine("Best induvidial: ");
         }
     }
 }

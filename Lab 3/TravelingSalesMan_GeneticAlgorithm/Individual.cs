@@ -6,7 +6,7 @@ namespace TravelingSalesMan_GeneticAlgorithm
 {
     class Individual
     {
-        private const double MUTATION_PROBABILITY = 0.5;
+        private const double MUTATION_PROBABILITY = 0.2;
         private double? totalDistance = null;
         private readonly Random random;
         private List<Location> locations;
@@ -91,12 +91,12 @@ namespace TravelingSalesMan_GeneticAlgorithm
         {
             Random random = new Random();
             int index1 = random.Next(1, locations.Count - 3);
-            int index2 = random.Next(index1 + 1, locations.Count - 2);
+            //int index2 = random.Next(index1 + 1, locations.Count - 2);
 
             //swapping the elemnts at the random indexes
             Location temp = locations[index1];
-            locations[index1] = locations[index2];
-            locations[index2] = temp;
+            locations[index1] = locations[index1 - 1];
+            locations[index1 - 1] = temp;
         }
 
 
