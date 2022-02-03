@@ -6,7 +6,7 @@ namespace TravelingSalesMan_GeneticAlgorithm
 {
     class Individual
     {
-        private const double MUTATION_PROBABILITY = 0.001;
+        private const double MUTATION_PROBABILITY = 0.5;
         private double? totalDistance = null;
         private readonly Random random;
         private List<Location> locations;

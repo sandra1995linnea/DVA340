@@ -5,8 +5,9 @@ namespace TravelingSalesMan_GeneticAlgorithm
 {
     class Population
     {
-        private const int POPULATION_SIZE = 100;
-        private const int NUMBER_OF_PARENTS = 40;
+        private const int POPULATION_SIZE = 500;
+        private const int SURVIVORS = 30; //elitism
+        private const int NUMBER_OF_PARENTS = 100;
         private List<Individual> individuals;
         private readonly Random random;
 
@@ -78,8 +79,15 @@ namespace TravelingSalesMan_GeneticAlgorithm
                 ProbabilityList.Add(probability);
             }
 
+            //elitism, add the 20 best from the previous generation to continue into the next generation
+            individuals.Sort(Compare);
+            for(int i = 0; i < SURVIVORS; i++)
+            {
+                nextGeneration.Add(individuals[i]);
+            }
+
             // Create new generation from the parents
-            for (int i = 0; i < POPULATION_SIZE; i++)
+            for (int i = 0; i < POPULATION_SIZE - SURVIVORS; i++)
             {
                 ChooseParentIndices(out index1, out index2, ProbabilityList, random);
                 

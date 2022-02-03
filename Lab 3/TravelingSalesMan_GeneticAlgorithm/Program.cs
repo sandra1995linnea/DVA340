@@ -17,6 +17,8 @@ namespace TravelingSalesMan_GeneticAlgorithm
 
                 Console.WriteLine("Best fitness = " + population.BestFittness.ToString());
             }
+
+            //print the best solution:
         }
     }
 }
