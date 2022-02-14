@@ -40,17 +40,24 @@ namespace TravelingSalesMan_GeneticAlgorithm
             locations = randomLocations; 
         }
 
-        //select two random positions in the offspring and exchange the elements
         public void Mutate()
         {
-            Random random = new Random();
             int index1 = random.Next(1, locations.Count - 3);
-            //int index2 = random.Next(index1 + 1, locations.Count - 2);
+            int index2 = random.Next(index1 + 1, locations.Count - 2);
 
-            //swapping the elemnts at the random indexes
+            int numberOfLocationsToMove = index2 - index1 + 1;
+          
+            for(int i = 0; i < numberOfLocationsToMove / 2; i++)
+            {
+                Swap(index1 + i, index2 - i);
+            }
+        }
+
+        private void Swap(int index1, int index2)
+        {
             Location temp = locations[index1];
-            locations[index1] = locations[index1 - 1];
-            locations[index1 - 1] = temp;
+            locations[index1] = locations[index2];
+            locations[index2] = temp;
         }
 
         // fitness function - the lower it returns, the better

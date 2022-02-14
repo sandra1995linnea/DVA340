@@ -71,6 +71,7 @@ namespace TravelingSalesMan_GeneticAlgorithm
 
             List<Individual> parents = Selection();
 
+            //this we do for the probability
             foreach(var parent in parents)
             {
                 sum0fFitness += parent.FitnessValue;
@@ -82,7 +83,7 @@ namespace TravelingSalesMan_GeneticAlgorithm
                 ProbabilityList.Add(probability);
             }
 
-            //elitism, add the 20 best from the previous generation to continue into the next generation
+            //elitism, add the best from the previous generation to continue into the next generation
             individuals.Sort(Compare);
             for(int i = 0; i < SURVIVORS; i++)
             {
@@ -110,6 +111,7 @@ namespace TravelingSalesMan_GeneticAlgorithm
             } while (index1 == index2);
         }
 
+         
         private int ChooseIndex(List<double> probabilityList, Random random)
         {
             double r = random.NextDouble();

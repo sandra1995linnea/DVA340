@@ -41,6 +41,7 @@ namespace TravelingSalesMan_GeneticAlgorithm
                 Genes[i + index2 + 1] = fromParent2[i + index1];
             }
 
+            //the offspring
             Individual individual = new Individual(Genes.ToList(), random);
             if (ShouldMutate(random))
             {
