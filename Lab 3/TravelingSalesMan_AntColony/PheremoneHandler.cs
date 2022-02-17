@@ -8,6 +8,9 @@ namespace TravelingSalesMan_AntColony
 {
     class PheremoneHandler
     {
+        private void Update()
+        {
 
+        }
     }
 }

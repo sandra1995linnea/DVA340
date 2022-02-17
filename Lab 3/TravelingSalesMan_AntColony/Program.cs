@@ -10,6 +10,10 @@ namespace TravelingSalesMan_AntColony
     {
         static void Main(string[] args)
         {
+            Graph graph = new Graph();
+            List<Location> locations = graph.GenerateLocations();
+
+
         }
     }
 }

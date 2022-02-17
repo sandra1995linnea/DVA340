@@ -8,10 +8,35 @@ namespace TravelingSalesMan_AntColony
 {
     class Ant
     {
-        public Ant()
-        {
-            List<Location> locations = new List<Location>();
-            List<Location> visited = new List<Location>();
+        private double? totaldistance = null;
+        List<Location> locations = new List<Location>();
+        List<Location> visited = new List<Location>();
+        internal List<Location> Locations => locations;
+
+
+        public double TotalDistance 
+        { 
+            get
+            {
+                if(totaldistance == null)
+                {
+                    totaldistance = 0;
+                    Location previous = null;
+
+                    foreach(var location in locations)
+                    {
+                        if(previous != null)
+                        {
+                            totaldistance += previous.DistanceTo(location);
+                        }
+                        previous = location;
+                    }
+
+                    totaldistance += Locations.First().DistanceTo(Locations.Last());
+                }
+
+                return (double)totaldistance;
+            }
         }
     }
 }
