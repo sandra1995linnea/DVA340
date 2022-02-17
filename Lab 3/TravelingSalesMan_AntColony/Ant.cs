@@ -9,10 +9,33 @@ namespace TravelingSalesMan_AntColony
     class Ant
     {
         private double? totaldistance = null;
-        List<Location> locations = new List<Location>();
-        List<Location> visited;
-        internal List<Location> Locations => locations;
+        private PheremoneHandler pheremoneHandler;
+                
+        /// <summary>
+        /// A list of all locations that exist
+        /// </summary>
+        private readonly List<Location> locations;
 
+        public Ant(List<Location> locations, PheremoneHandler pheremoneHandler)
+        {
+            this.locations = locations;
+            this.pheremoneHandler = pheremoneHandler;
+        }
+
+        /// <summary>
+        /// Lets the ant run around and find a path through all locations
+        /// </summary>
+        public void Run()
+        {
+
+            // DO the magic!
+        }
+
+        /// <summary>
+        /// The locations in the order the ant visited them.
+        /// The actual solution that the ant represents.
+        /// </summary>
+        internal List<Location> Visited { get; private set; }
 
         public double TotalDistance 
         { 
@@ -23,17 +46,16 @@ namespace TravelingSalesMan_AntColony
                     totaldistance = 0;
                     Location previous = null;
 
-                    foreach(var location in locations)
+                    foreach(var location in Visited)
                     {
                         if(previous != null)
                         {
                             totaldistance += previous.DistanceTo(location);
                         }
-                        visited.Add(previous);
                         previous = location;
                     }
 
-                    totaldistance += Locations.First().DistanceTo(Locations.Last());
+                    totaldistance += Visited.First().DistanceTo(Visited.Last());
                 }
 
                 return (double)totaldistance;
