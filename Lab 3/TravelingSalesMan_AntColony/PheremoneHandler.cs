@@ -12,5 +12,7 @@ namespace TravelingSalesMan_AntColony
         {
 
         }
+
+        public float Pheremone { get; }
     }
 }

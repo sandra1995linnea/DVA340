@@ -10,7 +10,7 @@ namespace TravelingSalesMan_AntColony
     {
         private double? totaldistance = null;
         List<Location> locations = new List<Location>();
-        List<Location> visited = new List<Location>();
+        List<Location> visited;
         internal List<Location> Locations => locations;
 
 
@@ -29,6 +29,7 @@ namespace TravelingSalesMan_AntColony
                         {
                             totaldistance += previous.DistanceTo(location);
                         }
+                        visited.Add(previous);
                         previous = location;
                     }
 
