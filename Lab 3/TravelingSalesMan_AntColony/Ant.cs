@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TravelingSalesMan_AntColony
 {
     class Ant
     {
         private double? totaldistance = null;
-        private PheremoneHandler pheremoneHandler;
+        private readonly PheremoneHandler pheremoneHandler;
+        private readonly Random random;
+        private const double alpha = 1;
+        private const double beta = 1;
                 
         /// <summary>
         /// A list of all locations that exist
@@ -20,6 +21,8 @@ namespace TravelingSalesMan_AntColony
         {
             this.locations = locations;
             this.pheremoneHandler = pheremoneHandler;
+            random = new Random();
+            Visited = new List<Location>();
         }
 
         /// <summary>
@@ -27,8 +30,92 @@ namespace TravelingSalesMan_AntColony
         /// </summary>
         public void Run()
         {
+            var leftToVisit = new List<Location>(locations);
+            Visited.Clear();
 
-            // DO the magic!
+            // visit the first location
+            GoToNextCity(leftToVisit, 0);
+
+            while(leftToVisit.Count > 0)
+            {
+                // let the ant choose where to go next, and go there
+
+                // r = Visited.Last()
+                // s each element of leftToVisit
+
+                // Visited.Last() is always the location the ant is at = r in the lecture notes
+                double[] probabilites = Probabilites(Visited.Last(), leftToVisit);
+
+                int index = ChooseIndex(probabilites);
+
+                // go to a given location:
+                GoToNextCity(leftToVisit, index);
+            }
+        }
+
+        private void GoToNextCity(List<Location> leftToVisit, int index)
+        {
+            Visited.Add(leftToVisit[index]);
+            leftToVisit.RemoveAt(index);
+        }
+
+        /// <summary>
+        /// Randomly chooses an index with some probabilites.
+        /// </summary>
+        /// <param name="probabilites">The probabilites of choosing a given index</param>
+        /// <returns>The chosen index</returns>
+        private int ChooseIndex(double[] probabilites)
+        {
+            double randomProbability = random.NextDouble();
+
+            for (int i = 0; i < probabilites.Length; i++)
+            {
+                if(probabilites[i] >= randomProbability)
+                {
+                    return i;
+                }
+            }
+
+            return probabilites.Length - 1;
+        }
+
+        /// <summary>
+        /// Calculates the probabilites of each possible location.
+        /// </summary>
+        /// <param name="currentLocation">Where the ant is</param>
+        /// <param name="possibleLocations">All locations the ant could go to</param>
+        /// <returns></returns>
+        private double[] Probabilites(Location currentLocation, List<Location> possibleLocations)
+        {
+            double[] probabilities = new double[possibleLocations.Count];
+            double[] benifits = new double[possibleLocations.Count];
+
+            double sum0fBenifits = 0.0;
+            for (int i = 0; i < possibleLocations.Count; i++)
+            {
+                benifits[i] = Benifit(currentLocation, possibleLocations[i]);
+                sum0fBenifits += benifits[i];
+            }
+
+            for (int i = 0; i < possibleLocations.Count; i++)
+            {
+                probabilities[i] = benifits[i] / sum0fBenifits;
+            }
+
+            return probabilities;
+        }
+
+        /// <summary>
+        /// Calculates the benifit of going from location r to location s.
+        /// </summary>
+        /// <param name="r">The location the ant is at</param>
+        /// <param name="s">The other location</param>
+        /// <returns></returns>
+        private double Benifit(Location r, Location s)
+        {
+            double distance = Math.Pow(r.DistanceTo(s), beta);
+            double pheremone = Math.Pow(pheremoneHandler.Pheremone(r, s), alpha);
+            return pheremone * (1/distance);
         }
 
         /// <summary>

@@ -8,7 +8,13 @@ namespace TravelingSalesMan_AntColony
 {
     class PheremoneHandler
     {
+        /// <summary>
+        /// The proportion of the pheremone that evaporates each timestep
+        /// </summary>
+        private const double evaporationProportion = 0.1;
+
         private List<Location> locations;
+
         /// <summary>
         /// stores the amount of pheremone between pairs of locations (edges)
         /// </summary>
@@ -25,11 +31,20 @@ namespace TravelingSalesMan_AntColony
         /// <param name="allAnts"></param>
         public void Update(List<Ant> allAnts)
         {
+            EvaporatePheremone();
+
             foreach(var ant in allAnts)
             {
-              //  pheremones.TryGetValue()
-                // do magic!
+                
             }
+        }
+
+        /// <summary>
+        /// Simulates the pheremone evaporating
+        /// </summary>
+        private void EvaporatePheremone()
+        {
+            throw new NotImplementedException(); // TODO!
         }
 
         /// <summary>
@@ -38,7 +53,7 @@ namespace TravelingSalesMan_AntColony
         /// <param name="location1"></param>
         /// <param name="location2"></param>
         /// <returns></returns>
-        public float Pheremone(Location location1, Location location2)
+        public double Pheremone(Location location1, Location location2)
         {
             //if(vivited == null)
             //{
@@ -46,7 +61,7 @@ namespace TravelingSalesMan_AntColony
             //}
             // TODO
 
-            return 0;
+            return 1;
         }
     }
 }
