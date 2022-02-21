@@ -18,7 +18,7 @@ namespace TravelingSalesMan_AntColony
         /// <summary>
         /// stores the amount of pheremone between pairs of locations (edges)
         /// </summary>
-        private Dictionary<Tuple<Location, Location>, float> pheremones = new Dictionary<Tuple<Location, Location>, float>();
+        private Dictionary<Tuple<Location, Location>, double> pheremones = new Dictionary<Tuple<Location, Location>, double>();
 
         public PheremoneHandler(List<Location> locations)
         {
@@ -35,7 +35,19 @@ namespace TravelingSalesMan_AntColony
 
             foreach(var ant in allAnts)
             {
-                
+                var enumerator = ant.Visited.GetEnumerator();
+                var previous = enumerator;
+                enumerator.MoveNext();
+
+                do
+                {
+                    var r = previous.Current;
+                    var s = enumerator.Current;
+
+                    
+
+                    previous = enumerator;
+                } while (enumerator.MoveNext());
             }
         }
 
@@ -44,7 +56,14 @@ namespace TravelingSalesMan_AntColony
         /// </summary>
         private void EvaporatePheremone()
         {
-            throw new NotImplementedException(); // TODO!
+            Dictionary<Tuple<Location, Location>, double> new_pheremones = new Dictionary<Tuple<Location, Location>, double>();
+            double newValue; 
+            foreach(var pheremone in pheremones)
+            {
+                newValue = (1 - evaporationProportion) * pheremone.Value;
+                new_pheremones.Add(pheremone.Key, newValue);
+            }
+            pheremones = new_pheremones;
         }
 
         /// <summary>
