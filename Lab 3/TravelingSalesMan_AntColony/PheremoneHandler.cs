@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TravelingSalesMan_AntColony
 {
@@ -11,18 +8,17 @@ namespace TravelingSalesMan_AntColony
         /// <summary>
         /// The proportion of the pheremone that evaporates each timestep
         /// </summary>
-        private const double evaporationProportion = 0.1;
+        private const double evaporationProportion = 0.2;
+        private const double start_pheremone = 10.0;
 
-        private List<Location> locations;
 
         /// <summary>
         /// stores the amount of pheremone between pairs of locations (edges)
         /// </summary>
         private Dictionary<Tuple<Location, Location>, double> pheremones = new Dictionary<Tuple<Location, Location>, double>();
 
-        public PheremoneHandler(List<Location> locations)
+        public PheremoneHandler()
         {
-            this.locations = locations;
         }
 
         /// <summary>
@@ -36,6 +32,8 @@ namespace TravelingSalesMan_AntColony
             foreach(var ant in allAnts)
             {
                 var enumerator = ant.Visited.GetEnumerator();
+                enumerator.MoveNext();
+
                 var previous = enumerator;
                 enumerator.MoveNext();
 
@@ -43,8 +41,15 @@ namespace TravelingSalesMan_AntColony
                 {
                     var r = previous.Current;
                     var s = enumerator.Current;
+                    double currentPheremone;
+                
+                    if(!pheremones.TryGetValue(new Tuple<Location, Location>(r, s), out currentPheremone))
+                    {
+                        currentPheremone = start_pheremone;
+                    }
 
-                    
+                    currentPheremone += 1 / ant.TotalDistance;
+                    pheremones[new Tuple<Location, Location>(r, s)] = currentPheremone;
 
                     previous = enumerator;
                 } while (enumerator.MoveNext());
@@ -74,13 +79,14 @@ namespace TravelingSalesMan_AntColony
         /// <returns></returns>
         public double Pheremone(Location location1, Location location2)
         {
-            //if(vivited == null)
-            //{
-            //    return 0;
-            //}
-            // TODO
+            double val;
+            
+            if (!pheremones.TryGetValue(new Tuple<Location, Location>(location1, location2), out val))
+            {
+                val = start_pheremone;
+            }
 
-            return 1;
+            return val;
         }
     }
 }

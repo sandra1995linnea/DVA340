@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TravelingSalesMan_AntColony
 {
@@ -24,6 +21,8 @@ namespace TravelingSalesMan_AntColony
             double shortestDistance = colony.ShortestDistance;
 
             // print distance
+            Console.WriteLine("Press a key: ");
+            Console.ReadLine();
         }
     }
 }

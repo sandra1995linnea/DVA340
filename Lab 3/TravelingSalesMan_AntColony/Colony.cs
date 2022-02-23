@@ -1,22 +1,24 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace TravelingSalesMan_AntColony
 {
     class Colony
     {
-        private const int NUMBER_OF_ANTS = 50;
+        private const int NUMBER_OF_ANTS = 300;
         private readonly List<Ant> ants;
 
         public Colony(List<Location> locations, double goalDistance)
         {
-            PheremoneHandler pheremoneHandler = new PheremoneHandler(locations);
+            PheremoneHandler pheremoneHandler = new PheremoneHandler();
+            Random random = new Random();
 
             // create ants!
             ants = new List<Ant>();
             for (int i = 0; i < NUMBER_OF_ANTS; i++)
             {
-                ants.Add(new Ant(locations, pheremoneHandler));
+                ants.Add(new Ant(locations, pheremoneHandler, random));
             }
 
             do
@@ -28,6 +30,7 @@ namespace TravelingSalesMan_AntColony
                 pheremoneHandler.Update(ants);
 
                 ants = ants.OrderBy(ant => ant.TotalDistance).ToList();
+                Console.WriteLine("Best ant: " + ants[0].TotalDistance + "Second best: " + ants[1].TotalDistance + "Third best: " + ants[2].TotalDistance);
             } while (ShortestDistance > goalDistance);
         }
 

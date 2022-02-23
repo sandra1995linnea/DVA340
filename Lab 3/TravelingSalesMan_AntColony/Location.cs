@@ -1,6 +1,5 @@
 ﻿using System;
 
-
 namespace TravelingSalesMan_AntColony
 {
     class Location

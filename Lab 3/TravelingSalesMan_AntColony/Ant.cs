@@ -9,20 +9,20 @@ namespace TravelingSalesMan_AntColony
         private double? totaldistance = null;
         private readonly PheremoneHandler pheremoneHandler;
         private readonly Random random;
-        private const double alpha = 1;
-        private const double beta = 1;
+        private const double alpha = 2;
+        private const double beta = 2.5;
                 
         /// <summary>
         /// A list of all locations that exist
         /// </summary>
         private readonly List<Location> locations;
 
-        public Ant(List<Location> locations, PheremoneHandler pheremoneHandler)
+        public Ant(List<Location> locations, PheremoneHandler pheremoneHandler, Random random)
         {
             this.locations = locations;
             this.pheremoneHandler = pheremoneHandler;
-            random = new Random();
             Visited = new List<Location>();
+            this.random = random;
         }
 
         /// <summary>
@@ -67,10 +67,12 @@ namespace TravelingSalesMan_AntColony
         private int ChooseIndex(double[] probabilites)
         {
             double randomProbability = random.NextDouble();
+            double sum0fprobabilities = 0.0;
 
             for (int i = 0; i < probabilites.Length; i++)
             {
-                if(probabilites[i] >= randomProbability)
+                sum0fprobabilities += probabilites[i];
+                if(sum0fprobabilities >= randomProbability)
                 {
                     return i;
                 }
@@ -113,8 +115,12 @@ namespace TravelingSalesMan_AntColony
         /// <returns></returns>
         private double Benifit(Location r, Location s)
         {
-            double distance = Math.Pow(r.DistanceTo(s), beta);
-            double pheremone = Math.Pow(pheremoneHandler.Pheremone(r, s), alpha);
+            double distance = r.DistanceTo(s);
+            double pheremone = pheremoneHandler.Pheremone(r, s);
+
+            pheremone = Math.Pow(pheremone, alpha);
+            distance = Math.Pow(distance, beta);
+
             return pheremone * (1/distance);
         }
 
