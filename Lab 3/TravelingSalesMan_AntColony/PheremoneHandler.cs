@@ -3,13 +3,14 @@ using System.Collections.Generic;
 
 namespace TravelingSalesMan_AntColony
 {
-    class PheremoneHandler
+    public class PheremoneHandler
     {
         /// <summary>
         /// The proportion of the pheremone that evaporates each timestep
         /// </summary>
         private const double evaporationProportion = 0.2;
         private const double start_pheremone = 10.0;
+        private int evaporationCounter = 0;
 
 
         /// <summary>
@@ -25,7 +26,7 @@ namespace TravelingSalesMan_AntColony
         /// update pheremone between two cities
         /// </summary>
         /// <param name="allAnts"></param>
-        public void Update(List<Ant> allAnts)
+        public void Update(List<IAnt> allAnts)
         {
             EvaporatePheremone();
 
@@ -41,12 +42,7 @@ namespace TravelingSalesMan_AntColony
                 {
                     var r = previous.Current;
                     var s = enumerator.Current;
-                    double currentPheremone;
-                
-                    if(!pheremones.TryGetValue(new Tuple<Location, Location>(r, s), out currentPheremone))
-                    {
-                        currentPheremone = start_pheremone;
-                    }
+                    double currentPheremone = GetPheremone(r, s);
 
                     currentPheremone += 1 / ant.TotalDistance;
                     pheremones[new Tuple<Location, Location>(r, s)] = currentPheremone;
@@ -61,6 +57,8 @@ namespace TravelingSalesMan_AntColony
         /// </summary>
         private void EvaporatePheremone()
         {
+            evaporationCounter++;
+
             Dictionary<Tuple<Location, Location>, double> new_pheremones = new Dictionary<Tuple<Location, Location>, double>();
             double newValue; 
             foreach(var pheremone in pheremones)
@@ -77,13 +75,13 @@ namespace TravelingSalesMan_AntColony
         /// <param name="location1"></param>
         /// <param name="location2"></param>
         /// <returns></returns>
-        public double Pheremone(Location location1, Location location2)
+        public double GetPheremone(Location location1, Location location2)
         {
             double val;
             
             if (!pheremones.TryGetValue(new Tuple<Location, Location>(location1, location2), out val))
             {
-                val = start_pheremone;
+                val = start_pheremone * Math.Pow(1 - evaporationProportion, evaporationCounter);
             }
 
             return val;

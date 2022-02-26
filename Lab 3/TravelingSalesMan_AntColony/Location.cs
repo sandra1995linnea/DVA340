@@ -2,7 +2,7 @@
 
 namespace TravelingSalesMan_AntColony
 {
-    class Location
+    public class Location
     {
         public Location(int id, double x, double y)
         {

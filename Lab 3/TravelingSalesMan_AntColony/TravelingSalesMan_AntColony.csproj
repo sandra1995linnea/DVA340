@@ -46,6 +46,7 @@
     <Compile Include="Ant.cs" />
     <Compile Include="Colony.cs" />
     <Compile Include="Graph.cs" />
+    <Compile Include="IAnt.cs" />
     <Compile Include="Location.cs" />
     <Compile Include="PheremoneHandler.cs" />
     <Compile Include="Program.cs" />

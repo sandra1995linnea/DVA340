@@ -7,7 +7,7 @@ namespace TravelingSalesMan_AntColony
     class Colony
     {
         private const int NUMBER_OF_ANTS = 300;
-        private readonly List<Ant> ants;
+        private readonly List<IAnt> ants;
 
         public Colony(List<Location> locations, double goalDistance)
         {
@@ -15,7 +15,7 @@ namespace TravelingSalesMan_AntColony
             Random random = new Random();
 
             // create ants!
-            ants = new List<Ant>();
+            ants = new List<IAnt>();
             for (int i = 0; i < NUMBER_OF_ANTS; i++)
             {
                 ants.Add(new Ant(locations, pheremoneHandler, random));

@@ -4,14 +4,14 @@ using System.Linq;
 
 namespace TravelingSalesMan_AntColony
 {
-    class Ant
+    class Ant : IAnt
     {
         private double? totaldistance = null;
         private readonly PheremoneHandler pheremoneHandler;
         private readonly Random random;
         private const double alpha = 2;
         private const double beta = 2.5;
-                
+
         /// <summary>
         /// A list of all locations that exist
         /// </summary>
@@ -36,7 +36,7 @@ namespace TravelingSalesMan_AntColony
             // visit the first location
             GoToNextCity(leftToVisit, 0);
 
-            while(leftToVisit.Count > 0)
+            while (leftToVisit.Count > 0)
             {
                 // let the ant choose where to go next, and go there
 
@@ -72,7 +72,7 @@ namespace TravelingSalesMan_AntColony
             for (int i = 0; i < probabilites.Length; i++)
             {
                 sum0fprobabilities += probabilites[i];
-                if(sum0fprobabilities >= randomProbability)
+                if (sum0fprobabilities >= randomProbability)
                 {
                     return i;
                 }
@@ -116,32 +116,32 @@ namespace TravelingSalesMan_AntColony
         private double Benifit(Location r, Location s)
         {
             double distance = r.DistanceTo(s);
-            double pheremone = pheremoneHandler.Pheremone(r, s);
+            double pheremone = pheremoneHandler.GetPheremone(r, s);
 
             pheremone = Math.Pow(pheremone, alpha);
             distance = Math.Pow(distance, beta);
 
-            return pheremone * (1/distance);
+            return pheremone * (1 / distance);
         }
 
         /// <summary>
         /// The locations in the order the ant visited them.
         /// The actual solution that the ant represents.
         /// </summary>
-        internal List<Location> Visited { get; private set; }
+        public List<Location> Visited { get; private set; }
 
-        public double TotalDistance 
-        { 
+        public double TotalDistance
+        {
             get
             {
-                if(totaldistance == null)
+                if (totaldistance == null)
                 {
                     totaldistance = 0;
                     Location previous = null;
 
-                    foreach(var location in Visited)
+                    foreach (var location in Visited)
                     {
-                        if(previous != null)
+                        if (previous != null)
                         {
                             totaldistance += previous.DistanceTo(location);
                         }
