@@ -9,8 +9,8 @@ namespace TravelingSalesMan_AntColony
         private double? totaldistance = null;
         private readonly PheremoneHandler pheremoneHandler;
         private readonly Random random;
-        private const double alpha = 2;
-        private const double beta = 2.5;
+        private const double alpha = 10;
+        private const double beta = 10;
 
         /// <summary>
         /// A list of all locations that exist
