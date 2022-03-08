@@ -10,22 +10,28 @@ namespace CSharp_Player
     {
         static void Main(string[] args)
         {
-            IPAddress ipAddr = IPAddress.Parse("127.0.0.1");
+
+            //System.Net.Sockets.TcpClient socket = new System.Net.Sockets.TcpClient();
+            
+            IPHostEntry ipHost = Dns.GetHostEntry("127.0.0.1");
+            IPAddress ipAddr = ipHost.AddressList[0];
             IPEndPoint ipEndPoint = new IPEndPoint(ipAddr, 30000);
             Socket client = new Socket(ipAddr.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+            //client = new Socket(ipAddr.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
 
             //Useful variables
             int gameEnd = 0;
             int maxTimeResponse = 5;
 
             // Player Name
-            string playerName = "Sandra";
+            string playerName = "Sötis <3";
 
             // Connecting to the server
             try {
+                //socket.Connect(HOST, PORT);
                 client.Connect(ipEndPoint);
             } catch (Exception e) {
-                Console.WriteLine("Error when connecting to the server!");
+                Console.WriteLine("Error when connecting to the server!\n" + e.Message);
             }
 
             byte[] data = new byte[128];
@@ -59,7 +65,7 @@ namespace CSharp_Player
                 }
 
                 if (dataString[0] != 'N' && dataString[0] != 'E') {
-                    // Transform the board and the playerTurn.
+                    //TODO: Transform the board and the playerTurn.
                     int playerTurn = dataString[0] -48;
                     Console.WriteLine(playerTurn);
                     int[] board = new int[14];
@@ -69,19 +75,22 @@ namespace CSharp_Player
                     while (i <= 13)
                     {
                         board[i] = (dataString[j]-48) * 10 + (dataString[j + 1]-48);
-                        i += 1;
-                        j += 2;
+                        i = i + 1;
+                        j = j + 2;
                     }
 
-                    // TODO we might choose player incorrectly:
-                    Player player = (playerTurn == 2 ? Player.MaxPlayer : Player.MinPlayer);
-
                     //Using your intelligent bot, assign a move to "move".
-                    string move = Bot.MiniMaxDescision(board, player);
-                                        
+
+                    // example: move = "1"; Possible moves from "1" to "6" if the game's 
+                    // rules allows those moves.
+
+                    string move = MancalaPlayer.GetMove(board);
+                    
                     byte[] msg = System.Text.Encoding.Default.GetBytes(move);
                     client.Send(msg);
                 }
+
+
             }
             Console.WriteLine("End of the game");
             client.Close();
