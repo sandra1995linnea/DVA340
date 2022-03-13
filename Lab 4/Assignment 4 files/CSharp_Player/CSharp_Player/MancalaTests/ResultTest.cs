@@ -91,5 +91,32 @@ namespace MancalaTests
             var expected = new int[] { 5, 4, 4, 4, 4, 4, 0, 4, 4, 4, 0, 5, 5, 1 };
             CollectionAssert.AreEqual(expected, actual);
         }
+
+        [TestMethod]
+        public void LastPieceInEmptyWhole()
+        {
+            int[] board = new int[14];
+
+            for(int i = 0; i < 6; i++)
+            {
+                board[i] = 4;
+            }
+
+            for(int i = 7; i < 13; i++)
+            {
+                if(i < 9)
+                {
+                    board[i] = 2;
+                }
+                else
+                {
+                    board[i] = 0;
+                }
+            }
+
+            var actual = MancalaPlayer.Result(board, 6, Player.Max);
+            var expected = new int[] { 4, 4, 4, 0, 4, 0, 6, 3, 3, 0, 0, 0, 0, 0 };
+            CollectionAssert.AreEqual(expected, actual);
+        }
    }
 }

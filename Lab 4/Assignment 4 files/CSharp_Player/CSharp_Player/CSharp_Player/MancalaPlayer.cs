@@ -66,45 +66,47 @@ namespace CSharp_Player
 
             var newBoard = new int[board.Length];
             Array.Copy(board, newBoard, board.Length);
+            int index = 0, opponentNest = 0, Nest= 0, onHand;
 
             // assume player == Max for now
-            switch(player)
+            switch (player)
             {
                 case Player.Max:
-                    int index = action - 1; // different for Min player
-
-                    // pick up stones:
-                    int onHand = newBoard[index];
-                    newBoard[index] = 0;
-
-                    while (onHand > 0)
-                    {
-                        index++;
-                        if (index != 13) // skip opponent's nest
-                        {
-                            // drop a stone in the hole
-                            newBoard[index]++;
-                            onHand--;
-                        }
-                    }
+                    index = action - 1;
+                    opponentNest = 13;
+                    Nest = 6;
                     break;
+
                 case Player.Min:
                     index = action + 6;
-                    onHand = newBoard[index];
-                    newBoard[index] = 0;
-
-                    while (onHand > 0)
-                    {
-                        index = (index + 1) % 14;
-                        if(index !=6)
-                        {
-                            newBoard[index]++;
-                            onHand--;
-                        }
-                    }
+                    opponentNest = 6;
+                    Nest = 13;
                     break;
             }
-          
+
+            // pick up stones:
+            onHand = newBoard[index];
+            newBoard[index] = 0;
+
+            while (onHand > 0)
+            {
+                index = (index + 1) % 14;
+                if (index != opponentNest) // skip opponent's nest
+                {
+                    if(onHand == 1 && newBoard[index] == 0)
+                    {
+                        //dropping the last stone onhand in the nest
+                        newBoard[Nest] += onHand;
+                        //moving the stones from the opposite whole of the empty whole to the nest
+                        newBoard[Nest] += newBoard[12 - index];
+                        newBoard[12 - index] = 0;
+                        break;
+                    }
+                    // drop a stone in the hole
+                    newBoard[index]++;
+                    onHand--;
+                }
+            }
 
             return newBoard;
         }
