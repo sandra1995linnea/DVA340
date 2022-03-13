@@ -14,7 +14,7 @@ namespace CSharp_Player
         /// <returns>A string representing the move, from "1" to "6"</returns>
         public static string GetMove(int[] board)
         {
-            throw new NotImplementedException();
+            return "1"; 
         }
 
         /// <summary>
@@ -22,20 +22,91 @@ namespace CSharp_Player
         /// </summary>
         /// <param name="board"></param>
         /// <returns></returns>
-        public static List<int> PossibleActions(int[] board, Player player)
+        public static List<int> PossibleActions(int[] board, int palyerTurn)
         {
-            return null; // TODO
+            List<int> actions = new List<int>();
+
+            if(palyerTurn == 1)
+            {
+                for (int i = 0; i < 6; i++)
+                {
+                    if(board[i] != 0)
+                    {
+                        actions.Add(i + 1);
+                    }
+                }
+            }
+
+            else
+            {
+                for(int i = 7; i < 13; i++)
+                {
+                    if(board[i] != 0)
+                    {
+                        actions.Add(i - 6);
+                    }
+                }
+            }
+            
+            return actions;
         }
 
         /// <summary>
         /// Returns how the board looks after the last acton
         /// </summary>
         /// <param name="board"></param>
-        /// <param name="action"></param>
+        /// <param name="action">1 to 6</param>
         /// <returns>board</returns>
-        public static int[] Result(int[] board, int action)
+        public static int[] Result(int[] board, int action, Player player)
         {
-            return null; // TODO
+            if (action > 6 || action < 1)
+            {
+                throw new ArgumentException("Incorrect action");
+            }
+
+            var newBoard = new int[board.Length];
+            Array.Copy(board, newBoard, board.Length);
+
+            // assume player == Max for now
+            switch(player)
+            {
+                case Player.Max:
+                    int index = action - 1; // different for Min player
+
+                    // pick up stones:
+                    int onHand = newBoard[index];
+                    newBoard[index] = 0;
+
+                    while (onHand > 0)
+                    {
+                        index++;
+                        if (index != 13) // skip opponent's nest
+                        {
+                            // drop a stone in the hole
+                            newBoard[index]++;
+                            onHand--;
+                        }
+                    }
+                    break;
+                case Player.Min:
+                    index = action + 6;
+                    onHand = newBoard[index];
+                    newBoard[index] = 0;
+
+                    while (onHand > 0)
+                    {
+                        index = (index + 1) % 14;
+                        if(index !=6)
+                        {
+                            newBoard[index]++;
+                            onHand--;
+                        }
+                    }
+                    break;
+            }
+          
+
+            return newBoard;
         }
 
         /// <summary>
@@ -45,7 +116,30 @@ namespace CSharp_Player
         /// <returns>true or false</returns>
         public static bool IsTerminal(int[] board)
         {
-            return false; // TODO
+            List<int> EmptyUnderSpots = new List<int>();
+            List<int> EmptyUpperSpots = new List<int>();
+
+            for(int i = 0; i < 6; i++)
+            {
+                if(board[i] == 0)
+                {
+                    EmptyUnderSpots.Add(i);
+                }
+            }
+
+            for(int i = 7; i < 13; i++)
+            {
+                if(board[i] == 0)
+                {
+                    EmptyUpperSpots.Add(i);
+                }
+            }
+
+            if(EmptyUnderSpots.Count == 6 || EmptyUpperSpots.Count == 6)
+            {
+                return true;
+            }
+            return false; 
         }
 
         /// <summary>
