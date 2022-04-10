@@ -13,8 +13,7 @@ namespace CSharp_Player
 
             //System.Net.Sockets.TcpClient socket = new System.Net.Sockets.TcpClient();
             
-            IPHostEntry ipHost = Dns.GetHostEntry("127.0.0.1");
-            IPAddress ipAddr = ipHost.AddressList[0];
+            IPAddress ipAddr = IPAddress.Parse("127.0.0.1");
             IPEndPoint ipEndPoint = new IPEndPoint(ipAddr, 30000);
             Socket client = new Socket(ipAddr.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
             //client = new Socket(ipAddr.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
@@ -24,7 +23,7 @@ namespace CSharp_Player
             int maxTimeResponse = 5;
 
             // Player Name
-            string playerName = "Sötis <3";
+            string playerName = "Sandra_Eriksen";
 
             // Connecting to the server
             try {
@@ -84,7 +83,7 @@ namespace CSharp_Player
                     // example: move = "1"; Possible moves from "1" to "6" if the game's 
                     // rules allows those moves.
 
-                    string move = MancalaPlayer.GetMove(board);
+                    string move = MancalaPlayer.MiniMax(board, (Player)playerTurn);
                     
                     byte[] msg = System.Text.Encoding.Default.GetBytes(move);
                     client.Send(msg);
