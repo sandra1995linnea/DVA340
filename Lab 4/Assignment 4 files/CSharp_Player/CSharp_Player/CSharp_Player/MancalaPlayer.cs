@@ -139,105 +139,57 @@ namespace CSharp_Player
                 }
             }
 
-            if(EmptyUnderSpots.Count == 6 || EmptyUpperSpots.Count == 6)
-            {
-                return true;
-            }
-            return false; 
+            return EmptyUnderSpots.Count == 6 || EmptyUpperSpots.Count == 6;
         }
 
         public static int BoardPoints(int[] board, Player player)
         {
             int playerPoints = 0;
-            switch(player)
+            int offset = 0;
+
+            if (player == Player.Min)
             {
-                case Player.Max:
-                    for (int i = 0; i <= 6; i++)
-                    {
-                        playerPoints += board[i];
-                    }
-                    break;
-                case Player.Min:
-                    for(int i = 7; i <= 13; i++)
-                    {
-                        playerPoints += board[i];
-                    }
-                    break;
+                offset = 7;
+            }
+
+            for (int i = 0; i <= 6; i++)
+            {
+                playerPoints += board[i + offset];
             }
 
             return playerPoints;
         }
 
-        public static int OpponentSide(int[] board, Player player)
-        {
-            int Nr0fStones = 0;
-            switch(player)
-            {
-                case Player.Max:
-                    for(int i = 7; i < 13; i++)
-                    {
-                        Nr0fStones += board[i];
-                    }
-                    break;
-                case Player.Min:
-                    for(int i = 0; i < 6; i++)
-                    {
-                        Nr0fStones += board[i];
-                    }
-                    break;
-            }
-
-            return Nr0fStones;
-        }
 
         /// <summary>
         /// the utility function - it creates an approximate value of how good a state will be
         /// </summary>
         /// <param name="board"></param>
-        /// <returns>1 if that board would be a win, -1 if it would be a loose and something in between if i would be on my way to lose/win</returns>
+        /// <returns>2 if that board would be a win, -2 if it would be a loose and something in between if i would be on my way to lose/win</returns>
         public static double Eval(int[] board)
         {
-            if(IsTerminal(board))
+            if (IsTerminal(board))
             {
                 int MaxPoints = BoardPoints(board, Player.Max);
                 int MinPoints = BoardPoints(board, Player.Min);
 
-                if(MaxPoints > MinPoints)
+                if (MaxPoints > MinPoints)
                 {
                     return 1;
                 }
-                else if(MaxPoints == MinPoints)
+                if (MaxPoints == MinPoints)
                 {
                     return 0;
                 }
                 return -1;
             }
 
-            //MAX will win
-            if(board[6] >= 24)
+            if (board[6] + board[13] == 0) // protect against division by 0
             {
-                return 1;
-            }
-            //MIN will win
-            if (board[13] >= 24)
-            {
-                return -1;
+                return 0;
             }
 
-            //MAX is leading
-            if (board[6] > board[13])
-            {
-                return board[6] / 24;
-            }
-            
-            //MIN is leading
-            if(board[13] > board[6])
-            {
-                return board[13] / -24;
-            }
-
-            return 0;
-
+            return board[6] / (board[6] + board[13]) - 0.5; // returns a value in range -0.5 to +0.5
         }
 
         /// <summary>
@@ -297,7 +249,7 @@ namespace CSharp_Player
 
         public static double MaxValue(int[] board, int depth)
         {
-            if(depth >= CUTOFF_LIMIT || IsTerminal(board))
+            if(depth > CUTOFF_LIMIT || IsTerminal(board))
             {
                 return Eval(board);
             }
@@ -324,7 +276,7 @@ namespace CSharp_Player
 
         public static double MinValue(int[] board, int depth)
         {
-            if (depth >= CUTOFF_LIMIT || IsTerminal(board))
+            if (depth > CUTOFF_LIMIT || IsTerminal(board))
             {
                 return Eval(board);
             }
