@@ -40,6 +40,7 @@ namespace CSharp_Player
             return actions;
         }
 
+
         /// <summary>
         /// Returns how the board looks after the last acton, and whose turn it is.
         /// </summary>
@@ -85,17 +86,26 @@ namespace CSharp_Player
                 index = (index + 1) % 14;
                 if (index != opponentNest) // skip opponent's nest
                 {
-                    if(onHand == 1 && newBoard[index] == 0)
+                    if(onHand == 1 && newBoard[index] == 0 && index != Nest)
                     {
-                        //dropping the last stone onhand in the nest
-                        newBoard[Nest] ++;
-                        if(index != Nest)
+                        if(player == Player.Max && index < 6 )
                         {
+                            //dropping the last stone onhand in the nest
+                            newBoard[Nest]++;
                             //moving the stones from the opposite whole of the empty whole to the nest
                             newBoard[Nest] += newBoard[12 - index];
                             newBoard[12 - index] = 0;
+                            break;
                         }
-                        break;
+                        if(player == Player.Min && index > 6)
+                        {
+                            //dropping the last stone onhand in the nest
+                            newBoard[Nest]++;
+                            //moving the stones from the opposite whole of the empty whole to the nest
+                            newBoard[Nest] += newBoard[12 - index];
+                            newBoard[12 - index] = 0;
+                            break;
+                        }
                     }
 
                     // drop a stone in the hole
@@ -105,7 +115,7 @@ namespace CSharp_Player
             }
 
             //if the last is in my nest, i get a free turn
-            if (onHand == 1 && index == Nest)
+            if (index == Nest)
             {
                 nextPlayer = player;
             }
@@ -165,31 +175,31 @@ namespace CSharp_Player
         /// the utility function - it creates an approximate value of how good a state will be
         /// </summary>
         /// <param name="board"></param>
-        /// <returns>2 if that board would be a win, -2 if it would be a loose and something in between if i would be on my way to lose/win</returns>
+        /// <returns>a huge positive/negative number if the board is a win, 0 if it is a draw</returns>
         public static double Eval(int[] board)
         {
+            int MaxPoints = BoardPoints(board, Player.Max);
+            int MinPoints = BoardPoints(board, Player.Min);
             if (IsTerminal(board))
             {
-                int MaxPoints = BoardPoints(board, Player.Max);
-                int MinPoints = BoardPoints(board, Player.Min);
-
                 if (MaxPoints > MinPoints)
                 {
-                    return 1;
+                    return 1000000;
                 }
                 if (MaxPoints == MinPoints)
                 {
                     return 0;
                 }
-                return -1;
+                return -1000000;
             }
 
-            if (board[6] + board[13] == 0) // protect against division by 0
-            {
-                return 0;
-            }
+           
 
-            return board[6] / (board[6] + board[13]) - 0.5; // returns a value in range -0.5 to +0.5
+            int playerPoints = board[6] * 10000 - board[13] * 10000;
+            //playerPoints += MaxPoints*100 - MinPoints * 100;
+
+            return playerPoints;
+            
         }
 
         /// <summary>

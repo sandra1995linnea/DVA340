@@ -1,4 +1,4 @@
-404   did not move in 1.0 sec.
+404   did not move in 1.0009989738464355 sec.
 
 404   performed an incorrect move ()
 

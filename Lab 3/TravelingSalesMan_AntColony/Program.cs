@@ -16,7 +16,7 @@ namespace TravelingSalesMan_AntColony
 
             List<Location> bestPath = colony.ShortestPath;
 
-            // TODO print path
+            
 
             double shortestDistance = colony.ShortestDistance;
 

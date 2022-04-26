@@ -98,7 +98,7 @@ namespace MancalaTests
         }
 
         [TestMethod]
-        public void LastPieceInEmptyWhole()
+        public void MaxPlayerPutsLastPieceInEmptyHoleOppositeSide()
         {
             int[] board = new int[14];
 
@@ -122,9 +122,51 @@ namespace MancalaTests
             int[] actual;
             Player nextPlayer;
             (actual, nextPlayer) = MancalaPlayer.Result(board, 6, Player.Max);
-            var expected = new int[] { 4, 4, 4, 0, 4, 0, 6, 3, 3, 0, 0, 0, 0, 0 };
+            var expected = new int[] { 4, 4, 4, 4, 4, 0, 1, 3, 3, 1, 0, 0, 0, 0 };
             CollectionAssert.AreEqual(expected, actual);
             Assert.AreEqual(nextPlayer, Player.Min);
+        }
+
+        [TestMethod]
+        public void MaxPlayerPutsLastPieceInEmptyHoleOwnSide()
+        {
+            int[] board = new int[] { 2, 4, 0, 4, 4, 0, 1, 3, 3, 1, 3, 0, 0, 0};
+
+            int[] actual;
+            Player nextPlayer;
+            (actual, nextPlayer) = MancalaPlayer.Result(board, 1, Player.Max);
+            var expected = new int[] { 0, 5, 0, 4, 4, 0, 5, 3, 3, 1, 0, 0, 0, 0 };
+            CollectionAssert.AreEqual(expected, actual);
+            Assert.AreEqual(nextPlayer, Player.Min);
+        }
+
+        [TestMethod]
+        public void MinPlayerPutsLastPieceInEmptyHoleOppositeSide()
+        {
+            
+            int[] board = new int[] { 2, 4, 0, 4, 4, 0, 1, 3, 0, 1, 3, 3, 4, 0 };
+
+            int[] actual;
+            Player nextPlayer;
+            (actual, nextPlayer) = MancalaPlayer.Result(board, 6, Player.Min);
+            var expected = new int[] { 3, 5, 1, 4, 4, 0, 1, 3, 0, 1, 3, 3, 0, 1 };
+            CollectionAssert.AreEqual(expected, actual);
+            Assert.AreEqual(nextPlayer, Player.Max);
+        }
+
+
+        [TestMethod]
+        public void MinPlayerPutsLastPieceInEmptyHoleOwnSide()
+        {
+            
+            int[] board = new int[] { 2, 4, 0, 4, 4, 0, 1, 3, 3, 1, 3, 0, 0, 0 };
+
+            int[] actual;
+            Player nextPlayer;
+            (actual, nextPlayer) = MancalaPlayer.Result(board, 2, Player.Min);
+            var expected = new int[] { 2, 0, 0, 4, 4, 0, 1, 3, 0, 2, 4, 0, 0, 5 };
+            CollectionAssert.AreEqual(expected, actual);
+            Assert.AreEqual(nextPlayer, Player.Max);
         }
 
         [TestMethod]
