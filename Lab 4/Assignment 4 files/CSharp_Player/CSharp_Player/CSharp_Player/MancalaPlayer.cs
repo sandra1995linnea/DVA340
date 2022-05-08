@@ -178,23 +178,33 @@ namespace CSharp_Player
         /// <returns>a huge positive/negative number if the board is a win, 0 if it is a draw</returns>
         public static double Eval(int[] board)
         {
+            //calculating how many points the MaxPlayer has on its side
             int MaxPoints = BoardPoints(board, Player.Max);
+            //calculating how many points the MinPlayer has on its side
             int MinPoints = BoardPoints(board, Player.Min);
+            
+            //Checking if it is game over
             if (IsTerminal(board))
             {
+                //if MaxPlayer wins, I return a giant positive number
                 if (MaxPoints > MinPoints)
                 {
                     return 1000000;
                 }
+                //if both players are equal, I return 0
                 if (MaxPoints == MinPoints)
                 {
                     return 0;
                 }
+                //in other case, MinPlayer won and I return a giant negative number
                 return -1000000;
             }
 
            
-
+            /*when the game is not over I take the stones in the MaxPlayer's nest and multiply them with 10000
+             * and do the same for the MinPlayer's nest. Then I take the product of MaxPlayer's nest and 
+             * subtract the product of the MinPlayer's nest
+             */
             int playerPoints = board[6] * 10000 - board[13] * 10000;
             //playerPoints += MaxPoints*100 - MinPoints * 100;
 
