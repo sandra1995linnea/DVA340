@@ -46,6 +46,9 @@ namespace ANN
                 activation += weights[i] * inputs[i];
             }
 
+            //adds the last weight to the activation, it is the bias weight
+            activation += weights[weights.Length];
+
             output = activationFunction(activation);
             return output;
         }

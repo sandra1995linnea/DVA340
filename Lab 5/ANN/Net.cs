@@ -21,7 +21,7 @@ namespace ANN
             nrOfLayers = NR_OF_LAYERS;
             nrOfNeurons = NR_OF_NEURONS;
             nrOfInputs = NR_OF_INPUTS;
-            // TODO create layers!
+            //create layers!
             layers = new List<Layer>();
 
             // first layer:
