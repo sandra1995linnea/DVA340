@@ -6,13 +6,13 @@ namespace ANN
     class Layer
     {
         private readonly List<Neuron> neurons;
-        public Layer(int nrOfNeurons, int nrOfInputs, Func<float, float> activationFunction)
+        public Layer(int nrOfNeurons, int nrOfInputs, Func<float, float> activationFunction, Func<float, float> derivationFunction)
         {
             neurons = new List<Neuron>();
 
             for(int i = 0; i < nrOfNeurons; i++)
             {
-                neurons.Add(new Neuron(nrOfInputs, activationFunction));
+                neurons.Add(new Neuron(nrOfInputs, activationFunction, derivationFunction));
             }
         }
 
@@ -23,7 +23,6 @@ namespace ANN
         /// <returns>Output data </returns>
         internal float[] Update(float[] data)
         {
-            // TODO!
             float[] outputs = new float[neurons.Count];
             for(int i = 0; i < neurons.Count; i++)
             {

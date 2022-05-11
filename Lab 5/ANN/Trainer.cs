@@ -16,7 +16,7 @@ namespace ANN
                 float[] output = net.Update(example.Pixles);
                 float[] expectedOutput = ExpectedOutput(example.Label);
 
-                //float[] errorTerms = errorTerms()
+                
             }
 
             
@@ -28,5 +28,6 @@ namespace ANN
             expected[label] = 1;
             return expected;
         }
+
     }
 }

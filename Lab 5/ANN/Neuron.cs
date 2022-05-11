@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ANN
 {
@@ -11,6 +7,7 @@ namespace ANN
         private readonly float[] weights;
         private readonly int numberOfInputs;
         private readonly Func<float, float> activationFunction;
+        private readonly Func<float, float> derivationFunction;
         private float output;
 
         /// <summary>
@@ -18,10 +15,11 @@ namespace ANN
         /// </summary>
         /// <param name="numberOfInputs">Number of inputs from either input layer or previous layer</param>
         /// <param name="activationFunction">Any activation function, e.g. sigmoid or tanh</param>
-        public Neuron(int numberOfInputs, Func<float, float> activationFunction)
+        public Neuron(int numberOfInputs, Func<float, float> activationFunction, Func<float, float> derivationFunction)
         {
             this.numberOfInputs = numberOfInputs;
             this.activationFunction = activationFunction;
+            this.derivationFunction = derivationFunction;
 
             // set weights:
             weights = new float[numberOfInputs + 1]; // +1 since one weght is used as bias

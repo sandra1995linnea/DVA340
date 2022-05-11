@@ -25,19 +25,21 @@ namespace ANN
             layers = new List<Layer>();
 
             // first layer:
-            layers.Add(new Layer(nrOfNeurons, nrOfInputs, Sigmoid));
+            layers.Add(new Layer(nrOfNeurons, nrOfInputs, Sigmoid, Derivation_Sigmoid));
 
             // the rest of hidden layers:
             for (int i = 1; i < nrOfLayers - 1; i++)
             {
-                layers.Add(new Layer(nrOfNeurons, nrOfNeurons, Sigmoid));
+                layers.Add(new Layer(nrOfNeurons, nrOfNeurons, Sigmoid, Derivation_Sigmoid));
             }
 
             // output layer:
-            layers.Add(new Layer(nrOfNeurons, nrOfNeurons, Sigmoid));
+            layers.Add(new Layer(nrOfNeurons, nrOfNeurons, Sigmoid, Derivation_Sigmoid));
         }
 
         private float Sigmoid(float x) => (float)(1 / (1 + Math.Exp(-x)));
+
+        private float Derivation_Sigmoid(float x) => Sigmoid(x) * (1 - Sigmoid(x));
 
         /// <summary>
         /// Updates the layers. Puts input into the first layer and gets out outputs from the last layer
