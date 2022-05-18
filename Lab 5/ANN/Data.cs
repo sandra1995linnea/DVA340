@@ -33,7 +33,7 @@ namespace ANN
             return data;
         }
 
-        public Data(int label, float[] pixles)
+        private Data(int label, float[] pixles)
         {
             Label = label;
             Pixles = pixles;

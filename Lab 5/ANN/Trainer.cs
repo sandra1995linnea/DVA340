@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace ANN
 {
@@ -10,16 +6,12 @@ namespace ANN
     {
         public void Train(Net net, List<Data> trainingSet)
         {
-
             foreach(var example in trainingSet)
             {
-                float[] output = net.Update(example.Pixles);
+                net.Update(example.Pixles);
                 float[] expectedOutput = ExpectedOutput(example.Label);
-
-                
+                net.Backpropogate(expectedOutput);
             }
-
-            
         }
 
         private float[] ExpectedOutput(int label)
