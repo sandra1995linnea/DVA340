@@ -5,15 +5,29 @@ namespace ANN
 {
     class Layer
     {
-        private readonly List<Neuron> neurons;
-        public Layer(int nrOfNeurons, int nrOfInputs, Func<float, float> activationFunction, Func<float, float> derivationFunction)
+        protected readonly List<Neuron> neurons;
+        protected readonly Func<float, float> derivationFunction;
+
+        public Layer(int nrOfNeurons, int nrOfInputs, Func<float, float> activationFunction, Func<float, float> derivationFunction, float learningrate)
         {
             neurons = new List<Neuron>();
 
             for(int i = 0; i < nrOfNeurons; i++)
             {
-                neurons.Add(new Neuron(nrOfInputs, activationFunction, derivationFunction));
+                neurons.Add(new Neuron(nrOfInputs, activationFunction, learningrate));
             }
+
+            this.derivationFunction = derivationFunction;
+        }
+
+        internal float DownStreamErrors(int j)
+        {
+            float sum = 0;
+            foreach (var neuron in neurons)
+            {
+                sum += neuron.ErrorTerm * neuron.Weights[j];
+            }
+            return sum;
         }
 
         /// <summary>
