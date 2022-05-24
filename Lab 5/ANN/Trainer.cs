@@ -20,6 +20,5 @@ namespace ANN
             expected[label] = 1;
             return expected;
         }
-
     }
 }

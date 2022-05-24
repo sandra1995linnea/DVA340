@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ANN
 {
@@ -13,13 +9,12 @@ namespace ANN
         {
         }
 
-        private void Backpropogate(float[] expectedOutput)
+        internal void Backpropogate(float[] expectedOutput)
         {
             for(int i = 0; i < neurons.Count; i++)
             {
                 neurons[i].ErrorTerm = (expectedOutput[i] - neurons[i].Output) * derivationFunction(neurons[i].Output);
             }
-            
         }
     }
 }

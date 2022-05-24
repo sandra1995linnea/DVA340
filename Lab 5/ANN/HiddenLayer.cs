@@ -1,26 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ANN
 {
     internal class HiddenLayer : Layer
     {
-        public HiddenLayer(int nrOfNeurons, int nrOfInputs, Func<float, float> activationFunction, Func<float, float> derivationFunction, float learningrate) : 
+        private readonly Layer nextlayer;
+
+        public HiddenLayer(int nrOfNeurons, int nrOfInputs, Func<float, float> activationFunction, Func<float, float> derivationFunction, float learningrate, Layer nextlayer) : 
             base(nrOfNeurons, nrOfInputs, activationFunction, derivationFunction, learningrate)
         {
+            this.nextlayer = nextlayer;
         }
 
-        private void Backpropogate(float[] expectedOutput)
+        internal void Backpropogate()
         {
-            for(int i = 0; i < neurons.Count; i++)
+            for(int j = 0; j < neurons.Count; j++)
             {
-                neurons[i].ErrorTerm = derivationFunction(neurons[i].Output) * 
+                neurons[j].ErrorTerm = derivationFunction(neurons[j].Output) * nextlayer.DownStreamErrors(j);
             }
         }
     }
-
-
 }

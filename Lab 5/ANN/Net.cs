@@ -10,7 +10,12 @@ namespace ANN
 
         internal void Backpropogate(float[] expectedOutput)
         {
+            (layers[layers.Count - 1] as OutputLayer).Backpropogate(expectedOutput);
             
+            for(int i = layers.Count - 2; i >= 0; i--)
+            {
+                (layers[i] as HiddenLayer).Backpropogate();
+            }
         }
 
         /// <summary>
@@ -23,19 +28,15 @@ namespace ANN
         {
             
             //create layers!
+            // create output layer first and put it last in the list, then create hidden layers and put it in front of output layer
             layers = new List<Layer>();
 
-            // first layer:
-            layers.Add(new HiddenLayer(nrOfNeuronsPerLayer, nrOfInputs, Sigmoid, Derivation_Sigmoid, learningrate));
+            layers.Insert(0, new OutputLayer(nrOfNeuronsPerLayer, nrOfInputs, Sigmoid, Derivation_Sigmoid, learningrate));
 
-            // the rest of hidden layers:
-            for (int i = 1; i < nrOfLayers - 1; i++)
+            for (int i = 1; i < nrOfLayers; i++)
             {
-                layers.Add(new HiddenLayer(nrOfNeuronsPerLayer, nrOfNeuronsPerLayer, Sigmoid, Derivation_Sigmoid, learningrate));
+                layers.Insert(0, new HiddenLayer(nrOfNeuronsPerLayer, nrOfInputs, Sigmoid, Derivation_Sigmoid, learningrate, layers[0]));
             }
-
-            // output layer:
-            layers.Add(new OutputLayer(nrOfNeuronsPerLayer, nrOfNeuronsPerLayer, Sigmoid, Derivation_Sigmoid, learningrate));
         }
 
         private float Sigmoid(float x) => (float)(1 / (1 + Math.Exp(-x)));
