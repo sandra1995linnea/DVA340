@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace ANN
 {
@@ -10,14 +6,34 @@ namespace ANN
     {
         internal double Test(Net net, List<Data> testingSet)
         {
+            int correctAnswers = 0;
             foreach (var example in testingSet)
             {
                 float[] output = net.Update(example.Pixles);
+                int identifiedNumber = Interprete(output);
 
-                // find which output is biggest
+                if (identifiedNumber == example.Label)
+                {
+                    correctAnswers++;
+                }
             }
-            return 0; //TODO!
+            return (double)correctAnswers / testingSet.Count; 
         }
 
+        private static int Interprete(float[] output)
+        {
+            float biggst_number = -1;
+            int index = 0;
+            for (int i = 0; i < output.Length; i++)
+            {
+                if (output[i] > biggst_number)
+                {
+                    biggst_number = output[i];
+                    index = i;
+                }
+            }
+
+            return index;
+        }
     }
 }

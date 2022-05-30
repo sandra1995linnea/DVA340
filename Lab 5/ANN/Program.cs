@@ -12,7 +12,7 @@ namespace ANN
         {
             List <Data> allData = Data.ReadFile();
             //creates a net. number of inputs is the same amount as the nr of pixles
-            Net net = new Net(4, 10, allData[0].Pixles.Length, (float)0.04);
+            Net net = new Net(4, 10, allData[0].Pixles.Length, (float)0.4);
 
             int trainingSize = (int)(allData.Count * 0.7);
             int validationSize = (int)(allData.Count * 0.1);
@@ -20,20 +20,24 @@ namespace ANN
 
             List<Data> trainingSet = allData.GetRange(0, trainingSize).ToList();
             List<Data> validationSet = allData.GetRange(trainingSize, validationSize).ToList();
-            List<Data> testingSet = allData.GetRange(validationSize, testingSize).ToList();
+            List<Data> testingSet = allData.GetRange(trainingSize + validationSize, testingSize).ToList();
 
             Trainer train = new Trainer();
             Tester tester = new Tester();
 
-            // TODO do this many times
-            train.Train(net, trainingSet);
-
-            double proportionOfCorrectAnswers = tester.Test(net, testingSet);
-            if (proportionOfCorrectAnswers > 0.8)
+            double proportionOfCorrectAnswers;
+            do
             {
+                for (int i = 0; i <= 1; i++)
+                {
+                    train.Train(net, trainingSet);
+                }
 
-            }
+                proportionOfCorrectAnswers = tester.Test(net, testingSet);
 
+                Console.WriteLine("Amount of correctness this far: " + (proportionOfCorrectAnswers * 100).ToString() + "%");
+
+            } while (proportionOfCorrectAnswers < 0.8);
 
             proportionOfCorrectAnswers = tester.Test(net, validationSet);
 

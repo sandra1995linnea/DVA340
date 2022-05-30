@@ -41,10 +41,10 @@ namespace ANN
 
             // set weights:
             Weights = new float[numberOfInputs + 1]; // +1 since one weght is used as bias
-            Random random = new Random();
+            
             for (int i = 0; i < Weights.Length; i++)
             {
-                Weights[i] = random.Next(-1, 1);
+                Weights[i] = (float)RandomHandler.Random.NextDouble() * 2 - 1;
             }
         }
 
@@ -64,7 +64,7 @@ namespace ANN
             }
 
             //adds the last weight to the activation, it is the bias weight
-            activation += Weights[Weights.Length];
+            activation += Weights[Weights.Length - 1];
 
             Output = activationFunction(activation);
             return Output;
@@ -74,10 +74,11 @@ namespace ANN
         {
             for(int i = 0; i < Inputs.Length; i++)
             {
-                Weights[i] += learningrate * ErrorTerm * Inputs[i];
+                float diff = learningrate * ErrorTerm * Inputs[i];
+                Weights[i] += diff;
             }
             //this is the last weight and input is 1 since Weights are 1 more than the inputs
-            Weights[Weights.Length] += learningrate * ErrorTerm * 1;
+            Weights[Weights.Length -1] += learningrate * ErrorTerm * 1;
         }
     }
 }

@@ -31,12 +31,16 @@ namespace ANN
             // create output layer first and put it last in the list, then create hidden layers and put it in front of output layer
             layers = new List<Layer>();
 
-            layers.Insert(0, new OutputLayer(nrOfNeuronsPerLayer, nrOfInputs, Sigmoid, Derivation_Sigmoid, learningrate));
+            layers.Insert(0, new OutputLayer(nrOfNeuronsPerLayer, nrOfNeuronsPerLayer, Sigmoid, Derivation_Sigmoid, learningrate));
 
-            for (int i = 1; i < nrOfLayers; i++)
+            for(int i = 1; i < nrOfLayers -1; i++)
             {
-                layers.Insert(0, new HiddenLayer(nrOfNeuronsPerLayer, nrOfInputs, Sigmoid, Derivation_Sigmoid, learningrate, layers[0]));
+                layers.Insert(0, new HiddenLayer(nrOfNeuronsPerLayer, nrOfNeuronsPerLayer, Sigmoid, Derivation_Sigmoid, learningrate, layers[0]));
             }
+            
+            //create the first layer last
+            layers.Insert(0, new HiddenLayer(nrOfNeuronsPerLayer, nrOfInputs, Sigmoid, Derivation_Sigmoid, learningrate, layers[0]));
+
         }
 
         private float Sigmoid(float x) => (float)(1 / (1 + Math.Exp(-x)));

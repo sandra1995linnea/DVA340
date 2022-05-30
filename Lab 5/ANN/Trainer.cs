@@ -16,7 +16,7 @@ namespace ANN
 
         private float[] ExpectedOutput(int label)
         {
-            float[] expected = { -1, -1, -1, 1, -1, -1, 1, -1, -1, -1 };
+            float[] expected = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1 };
             expected[label] = 1;
             return expected;
         }
